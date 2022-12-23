@@ -1,0 +1,65 @@
+---
+title: "Data Wrangling"
+author: "Laura Palacios"
+date: '2022-12-23'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This r teaching session will introduce data wrangling tasks which commonly occur in National Park Service activities.
+
+We will cover:
+0. Review of GitHub - retrieving this document from space!
+1. Importing a CSV as a data frame
+2. Viewing imported data frame
+3. Altering the data frame structure
+4. Filtering and Mutating the data frame.
+5. Joining data frames
+6. Best practices review.
+
+## 0. GitHub Review
+First we are going to create a branch from main. To do this, go to the [SWNC Learning Github Repository](https://github.com/sam-olivares-mejia/SWNC_Learning_Github). 
+
+If you've emailed Sam your GitHub username you should have contributor access to the repository. 
+
+Click on the **main dropdown** in the upper left, and begin typing your name separated by underscores. Once complete, click on **'Create branch:*your name* from main'**. This will create your branch! 
+
+```{r createbranch, echo=FALSE, out.width="30%"}
+include_graphics("images/CreateBranch.png")
+```
+
+*Note: Typically we make branches to work on different sections of the code and name them accordingly (ex.'DataWrangling', 'Analysis'). This ensures that when developing the code, we are not editing the same sections in different branches at the same time which would create issues in merging the code later on.*
+
+### Branch and Clone the Repository
+1. Send your GitHub username via teams to Laura so that she can add you to the repo.
+
+Note: If you are viewing this training as a recorded session, you will not have editing access to the repository. However, you can still create a clone and follow along with a local copy of the repo. Please skip to step 
+
+1. Navigate to the GitHub URL: LAURA URL and create a branch by 
+
+2. Create a branch 
+Click on **code** in the upper right, and copy the HTTPS url provided. 
+
+```{r CloneRepo, echo=FALSE, out.width="30%"}
+include_graphics("images/CloneRepo.png")
+```
+
+2. Open R Studio and go to **File>NewProject>VersionControl>Git** 
+
+```{r CloneRepoWorkflow, echo=FALSE, out.width="50%"}
+include_graphics("images/CloneRepoWorkflow.png")
+```
+
+3. Paste the repository URL and click **Create Project**. Congrats- you have now cloned the repository to your local computer! 
+
+### Open Branch 
+
+To switch to your branch of the repository, navigate to the Git Panel in RStudio. It should be located in the upper right panel next to your environment. If it is not there you can go to **View >ShowGit** to view it.
+
+Click the drop down menu in the upper right and select your branch name to switch to your branch!  
+
+```{r SwitchBranches, echo=FALSE, out.width="50%"}
+include_graphics("images/SwitchBranch.png")
