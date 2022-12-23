@@ -6,60 +6,104 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Call the knitr library for the assignment.
+library(knitr)
+
+# This is auto-populated in RMD creation and used for formatting purposes.
+opts_chunk$set(echo = TRUE)
 ```
 
 This r teaching session will introduce data wrangling tasks which commonly occur in National Park Service activities.
 
 We will cover:
-0. Review of GitHub - retrieving this document from space!
-1. Importing a CSV as a data frame
-2. Viewing imported data frame
-3. Altering the data frame structure
-4. Filtering and Mutating the data frame.
-5. Joining data frames
-6. Best practices review.
 
-## 0. GitHub Review
-First we are going to create a branch from main. To do this, go to the [SWNC Learning Github Repository](https://github.com/sam-olivares-mejia/SWNC_Learning_Github). 
+0. Awards and Accolades!
+1. Review of GitHub - retrieving this document from space!
+2. Importing a CSV as a data frame
+3. Viewing imported data frame
+4. Altering the data frame structure
+5. Filtering and Mutating the data frame.
+6. Joining data frames
+7. Best practices review.
 
-If you've emailed Sam your GitHub username you should have contributor access to the repository. 
+## 0. Awards and Accolades!
+  ![](images/GoldenBison.png){width=200px} </br>
+  Congratulations to Rachel, Kara, Carolyn, Rebecca, Ann, Jessica, Helen, and Anna: our first Golden Bison recipients.
+    
+  These individuals all successfully competed the second SWNC training on Github.
+## 1. GitHub Review
+1. Send Laura your GitHub username so that she can give you editing access to the repo.
 
-Click on the **main dropdown** in the upper left, and begin typing your name separated by underscores. Once complete, click on **'Create branch:*your name* from main'**. This will create your branch! 
+    *Note for recording listeners*: You will not have editing access to the repository, you can still create a clone and follow along with a local copy. Please skip to step 3.
 
-```{r createbranch, echo=FALSE, out.width="30%"}
+2. Create a branch
+
+    Go to the location of the [SWNC Data Wrangling Repository](https://github.com/palacila/SWNC_3_Data_Wrangling). 
+
+    Click on the **main dropdown** in the upper left, and begin typing your name separated by underscores. Once complete, click on **'Create branch:*your name* from main'**. This will create your branch! 
+
+```{r createbranch, echo=FALSE, out.width="50%",fig.align="center"}
 include_graphics("images/CreateBranch.png")
 ```
 
-*Note: Typically we make branches to work on different sections of the code and name them accordingly (ex.'DataWrangling', 'Analysis'). This ensures that when developing the code, we are not editing the same sections in different branches at the same time which would create issues in merging the code later on.*
-
-### Branch and Clone the Repository
-1. Send your GitHub username via teams to Laura so that she can add you to the repo.
-
-Note: If you are viewing this training as a recorded session, you will not have editing access to the repository. However, you can still create a clone and follow along with a local copy of the repo. Please skip to step 
-
-1. Navigate to the GitHub URL: LAURA URL and create a branch by 
-
-2. Create a branch 
+3. Clone the Repo
 Click on **code** in the upper right, and copy the HTTPS url provided. 
 
-```{r CloneRepo, echo=FALSE, out.width="30%"}
+```{r CloneRepo, echo=FALSE, out.width="30%",fig.align="center"}
 include_graphics("images/CloneRepo.png")
 ```
 
-2. Open R Studio and go to **File>NewProject>VersionControl>Git** 
+4. Open R Studio. Go to **File>NewProject>VersionControl>Git** . Paste the repository URL. Information and download location should auto-populate. Click **Create Project**.
 
-```{r CloneRepoWorkflow, echo=FALSE, out.width="50%"}
-include_graphics("images/CloneRepoWorkflow.png")
-```
+5. Switch to your branch in R studio. 
 
-3. Paste the repository URL and click **Create Project**. Congrats- you have now cloned the repository to your local computer! 
-
-### Open Branch 
-
-To switch to your branch of the repository, navigate to the Git Panel in RStudio. It should be located in the upper right panel next to your environment. If it is not there you can go to **View >ShowGit** to view it.
-
+    Navigate to the Git Panel (upper right) in RStudio. If it is not there, you can go to **View >ShowGit** to view it.
 Click the drop down menu in the upper right and select your branch name to switch to your branch!  
 
-```{r SwitchBranches, echo=FALSE, out.width="50%"}
+```{r SwitchBranches, echo=FALSE, out.width="50%", fig.align="center"}
 include_graphics("images/SwitchBranch.png")
+```
+
+6. Open the RMD file titled **Data_Wrangling_Learner.RMD** by using the file tab in the lower right corner of R studio.
+
+    We will be filling in the blanks of this document, then pushing the completed RMD files back onto GitHub. Please note that **Data_Wrangling_Master.RMD** is a completed copy of this lesson plan which can be used as reference. 
+    
+    Please fill in the author section of the header now.
+
+
+## 3. Importing a CSV as a data frame
+1. Install the library
+
+    You will need the **CSV** library installed in order to import CSVs. Type **install.packages("csv")**. 
+
+    Remember that install packages requires quotation marks within the parenthesis.
+    
+2. Import the file
+
+    What file types can be imported?
+
+    Most file types will have their own library to make it easy to bring the data into R studio. 
+    Unsure what to use? Google "r read in <file type> file" to find the appropriate library.
+
+
+    Today we will be using a CSV file, as this is the most common export from our databases.
+```{r}
+# Use the CSV library in this code
+
+# Remember! Not all warnings are bad. A warning about "built under R version" and "overwritten [methods]" may appear, but it is just information for you in inconveniently-scary-red-text.
+library(csv)
+```
+
+**To do** Use the read.csv() function to read in the csv from the /data folder.Use <- to assign it to the variable name groundhog_raw
+```{r}
+# Import the dataset
+groundhog_raw <- read.csv("data/Groundhog_Data.csv")
+```
+
+
+
+
+```{r}
+
+```
+

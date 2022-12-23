@@ -1,0 +1,68 @@
+---
+title: "Data Wrangling"
+author: ""
+date: '2022-12-23'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Call the knitr library for the assignment.
+library(knitr)
+
+# This is auto-populated in RMD creation and used for formatting purposes.
+opts_chunk$set(echo = TRUE)
+```
+
+This r teaching session will introduce data wrangling tasks which commonly occur in National Park Service activities.
+
+We will cover:
+
+0. Awards and Accolades!
+1. Review of GitHub - retrieving this document from space!
+2. Importing a CSV as a data frame
+3. Viewing imported data frame
+4. Altering the data frame structure
+5. Filtering and Mutating the data frame.
+6. Joining data frames
+7. Best practices review.
+
+## 0. Awards and Accolades!
+  ![](images/GoldenBison.png){width=200px} </br>
+  Congratulations to Rachel, Kara, Carolyn, Rebecca, Ann, Jessica, Helen, and Anna: our first Golden Bison recipients.
+    
+  These individuals all successfully competed the second SWNC training on Github. 
+
+## 1. GitHub Review
+
+  View Data_Wrangling_Master.RMD to see information. Steps should be completed prior to opening this file.
+
+
+## 3. Importing a CSV as a data frame
+
+1. Install the library
+
+    You will need the **CSV** library installed in order to import CSVs. Type **install.packages("csv")**. 
+
+    Remember that install packages requires quotation marks within the parenthesis.
+    
+2. Import the file
+
+    What file types can be imported?
+
+    Most file types will have their own library to make it easy to bring the data into R studio. 
+    Unsure what to use? Google "r read in <file type> file" to find the appropriate library.
+
+
+    Today we will be using a CSV file, as this is the most common export from our databases.
+```{r}
+# Use the CSV library in this code
+
+# Remember! Not all warnings are bad. A warning about "built under R version" and "overwritten [methods]" may appear, but it is just information for you in inconveniently-scary-red-text.
+library(csv)
+```
+
+**To do** Use the read.csv() function to read in the csv from the /data folder.Use <- to assign it to the variable name groundhog_raw
+```{r}
+# Import the dataset
+
+```
