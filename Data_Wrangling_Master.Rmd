@@ -248,4 +248,20 @@ groundhog_renamed <- groundhog_renamed %>%
   clean_names()
 ```
 
-## 7. Data Clean-up - Change column names
+## 7. Data Clean-up - Change table layout
+
+Often times, we want to manipulate our tables so that the columns are in a logical order. There are many ways to accomplish this task. 
+
+An easy way to move specific columns is to use the tidyverse relocate function. We can list the column names that we want, and they will be placed in order at the front of the data frame.
+```{r}
+# Create a new dataframe using a pipeline from groundhog_renamed
+groundhog_layout <- groundhog_renamed %>% 
+  # Relocate the average columns to the front
+  relocate(mar_average,feb_average)
+```
+
+**To Do**
+```{r}
+
+```
+

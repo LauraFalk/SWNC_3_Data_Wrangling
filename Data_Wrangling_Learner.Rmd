@@ -61,7 +61,7 @@ Today we will be using a CSV file, as this is the most common export from our da
 **To do** Use the read.csv() function to read in the csv from the data/ folder. Use <- to assign it to the variable name groundhog_raw
 ```{r}
 # Import the dataset
-groundhog_raw <- read.csv("data/Groundhog_Data.csv")
+groundhog_raw <- read.csv(
 ```
 
 ## 4. View the file
@@ -85,7 +85,7 @@ head(groundhog_raw, 10)
 
 ```{r}
 # tail pulls the last rows of the data
-tail(groundhog_raw,7)
+
 ```
 
 We can also look at summary statistics to gain more understanding of the dataset we've imported. 
@@ -93,7 +93,7 @@ We can also look at summary statistics to gain more understanding of the dataset
 **To do** Use the summary() function on groundhog_raw.
 ```{r}
 # We will use all default arguments, only the dataset name needs to be supplied.
-summary(groundhog_raw)
+
 ```
 
 Notice that there is not only min and max values, but also NA values.
@@ -103,10 +103,10 @@ The last task we'll do is count the number of rows in our current dataframe.
 *To do* Run nrow() and ncol() using all defaults. We will only need to supply the dataframe name.
 ```{r}
 # The output should match the dataframe details in your environment (132 obs.)
-nrow(groundhog_raw)
+nrow(
 
 # The output hsould match the dataframe details in  your environment(10 variables)
-ncol(groundhog_raw)
+
 ```
 
 
@@ -128,7 +128,6 @@ The first thing we will do is remove the rows which contain NAs.
 ```{r}
 # Notice that the output has 9 fewer rows (123 obs.)
 groundhog_raw %>%
-  drop_na()
 ```
 
 **To do** View the new dataframe and sort by the column Punxsutawney.Phil.  Notice there is an empty string for year 1901-2000. This was not dropped in the previous code block due to the character data type. 
@@ -160,7 +159,7 @@ colnames(groundhog_clean)
 # New Variable <- Old Variable pipleline
 groundhog_renamed <- groundhog_clean %>%
   #rename(new name = old name)
-  rename(Feb_Mid = February.Average.Temperature..Midwest.,) 
+
 ```
 
 There are also many options for batch renaming, which can use pattern-matching to rename columns. While this can be more complicated, it can be a great time-saver when working with multiple imported files. 
@@ -187,8 +186,7 @@ groundhog_renamed <- groundhog_renamed %>%
 **To do** Copy/paste the above code, alter the text to complete the same process for March.
 ```{r}
 # March renaming function
-groundhog_renamed <- groundhog_renamed %>%
-  rename_with(function(x){gsub("March.Average.Temperature..","Mar_",x)})
+
 ```
 
 
@@ -210,8 +208,7 @@ library(janitor)
 Call the clean names function.
 ```{r}
 # Janitor does the work for us.
-groundhog_renamed <- groundhog_renamed %>%
-  clean_names()
+groundhog_renamed <- groundhog_renamed 
 ```
 
 ## 7. Data Clean-up - Change column names
