@@ -43,7 +43,7 @@ We will cover:
 
 ## 3. Importing a CSV as a data frame
 
-**To do** If you do not have tidyverse installed, use **install.packages("csv")** in the console to install. 
+**To do** If you do not have csv installed, use **install.packages("csv")** in the console to install. 
 
 **To do** Load the library by using library()
 ```{r}
@@ -105,7 +105,7 @@ The last task we'll do is count the number of rows in our current dataframe.
 # The output should match the dataframe details in your environment (132 obs.)
 nrow(
 
-# The output hsould match the dataframe details in  your environment(10 variables)
+# The output should match the dataframe details in  your environment(10 variables)
 
 ```
 
