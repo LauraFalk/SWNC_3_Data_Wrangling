@@ -34,14 +34,14 @@ We will cover:
 
 ## 1. GitHub Review
 
-  View Data_Wrangling_Master.RMD to see information. Steps should be completed prior to opening this file.
+  View Data_Wrangling_Main.RMD to see information. Steps should be completed prior to opening this file.
   
-## 2. Create a branch
+### Create a branch
 
-  View Data_Wrangling_Master.RMD to see information. Steps should be completed prior to opening this file.
+  View Data_Wrangling_Main.RMD to see information. Steps should be completed prior to opening this file.
 
 
-## 3. Importing a CSV as a data frame
+## 2. Importing a CSV as a data frame
 
 **To do** If you do not have csv installed, use **install.packages("csv")** in the console to install. 
 
@@ -64,7 +64,7 @@ Today we will be using a CSV file, as this is the most common export from our da
 groundhog_raw <- read.csv(
 ```
 
-## 4. View the file
+## 3. View the file
 
 **To do** The data you just imported will appear in the environment (top right corner). Single click to open a new tab and view the data table. Use the arrows next to the column headers to sort and view the data in different ways.
 
@@ -110,7 +110,7 @@ nrow(
 ```
 
 
-## 5. Data Clean-up - remove rows with missing data.
+## 4. Data Clean-up - remove rows with missing data.
 
 Now we will clean up this data. There are many different functions and libraries that can be used. This training will focus on tidyverse. This is a set of libraries which are commonly used and all work in conjunction with one another.
 
@@ -145,7 +145,7 @@ groundhog_clean <- groundhog_raw %>%
 
 Note: We have only covered missing row removal in this course. When dealing with large-scale numeric data, there is a number of other options (such as replacing nulls with the median value or with the average of neighboring values) which may be employed.
 
-## 6. Data Clean-up - Change column names
+## 5. Data Clean-up - Change column names
 
 We sometimes import column names which are difficult to work with or do not adequately reference the data. Column names can be changed in numerous ways. This course will use the Rename() function of tidyverse.
 
@@ -211,4 +211,4 @@ Call the clean names function.
 groundhog_renamed <- groundhog_renamed 
 ```
 
-## 7. Data Clean-up - Change column names
+## 6. Data Clean-up - Change column names

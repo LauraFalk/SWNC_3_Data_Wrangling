@@ -1,5 +1,5 @@
 ---
-title: "Data Wrangling Master"
+title: "Data Wrangling Main"
 author: "Laura Palacios"
 date: '2022-12-23'
 output: html_document
@@ -23,11 +23,14 @@ We will cover:
 0. Awards and Accolades!
 1. Review of GitHub - retrieving this document from space!
 2. Importing a CSV as a data frame
-3. Viewing imported data frame
-4. Altering the data frame structure
-5. Filtering and Mutating the data frame.
-6. Joining data frames
-7. Best practices review.
+3. Viewing the file
+4. Data clean up
+  - Remove rows with missing data
+  - Filter data
+  - Change column names
+  - Change column layout
+  - Convert column data type
+  
 
 ## 0. Awards and Accolades!
   ![](images/GoldenBison.png){width=200px} </br>
@@ -40,9 +43,9 @@ We will cover:
 
     *Note for recording listeners*: You will not have editing access to the repository, you can still create a clone and follow along with a local copy (rather than a branch). Please skip steps 2.2 and 2.5.
 
-## 2. Create a branch
+### Create a Branch
 
-1. Go to the location of the [SWNC Data Wrangling Repository on GitHub](https://github.com/palacila/SWNC_3_Data_Wrangling). 
+1. Create a branch: Go to the location of the [SWNC Data Wrangling Repository on GitHub](https://github.com/palacila/SWNC_3_Data_Wrangling). 
 
 2. Click on the **main dropdown** in the upper left, and begin typing your name separated by underscores. Once complete, click on **'Create branch:*your name* from main'**. This will create your branch! 
 
@@ -70,12 +73,12 @@ include_graphics("images/SwitchBranch.png")
 
 6. Open the RMD file titled **Data_Wrangling_Learner.RMD** by using the file tab in the lower right corner of R studio.
 
-    We will be filling in the blanks of this document, then pushing the completed RMD files back onto GitHub. Please note that **Data_Wrangling_Master.RMD** is a completed copy of this lesson plan which can be used as reference. 
+    We will be filling in the blanks of this document, then pushing the completed RMD files back onto GitHub. Please note that **Data_Wrangling_Main.RMD** is a completed copy of this lesson plan which can be used as reference. 
     
     Please fill in the author section of the header now.
 
 
-## 3. Importing a CSV as a data frame
+## 2. Importing a CSV as a data frame
 
 **To do** If you do not have tidyverse installed, use **install.packages("csv")** in the console to install. 
 
@@ -90,7 +93,7 @@ Import the file
 What file types can be imported? Most file types will have their own library to make it easy to bring the data into R studio. Unsure what to use? Google "r read in <file type> file" to find the appropriate library.
 
 
-Today we will be using a CSV file, as this is the most common export from our databases.
+Today we will be using a CSV file, as this is the most common export from our databases.This file was modified from a public dataset located here [Groundhog data](https://www.kaggle.com/datasets/groundhogclub/groundhog-day)
 
 **To do** Use the read.csv() function to read in the csv from the data/ folder. Use <- to assign it to the variable name groundhog_raw
 ```{r}
@@ -98,7 +101,25 @@ Today we will be using a CSV file, as this is the most common export from our da
 groundhog_raw <- read.csv("data/Groundhog_Data.csv")
 ```
 
-## 4. View the file
+### The Question!
+
+How often did Punxsutawney Phil correctly predict that Pennsylvania would have an early spring (an average temperature above freezing) in February? 
+
+Here is a visualization of the data we'll be working with. Stay tuned for further training if you want to learn how to make pretty graphs!
+```{r}
+# Raw Data pipeline
+groundhog_raw %>%
+  # Filter out full and partial shadow predictions (not part of the question)
+  filter(Punxsutawney.Phil != "Full Shadow", Punxsutawney.Phil != "Partial Shadow") %>%
+  # Make a plot of the data. 
+  ggplot(aes(y = Year, x = February.Average.Temperature..Pennsylvania., fill = Punxsutawney.Phil)) + 
+  geom_col()
+```
+
+
+
+
+## 3. View the file
 
 **To do** The data you just imported will appear in the environment (top right corner). Single click to open a new tab and view the data table. Use the arrows next to the column headers to sort and view the data in different ways.
 
@@ -144,7 +165,9 @@ ncol(groundhog_raw)
 ```
 
 
-## 5. Data Clean-up - remove rows with missing data.
+## 4. Data Clean-up
+
+### Remove rows with missing data.
 
 Now we will clean up this data. There are many different functions and libraries that can be used. This training will focus on tidyverse. This is a set of libraries which are commonly used and all work in conjunction with one another.
 
@@ -180,7 +203,19 @@ groundhog_clean <- groundhog_raw %>%
 
 Note: We have only covered missing row removal in this course. When dealing with large-scale numeric data, there is a number of other options (such as replacing nulls with the median value or with the average of neighboring values) which may be employed.
 
-## 6. Data Clean-up - Change column names
+### Filter data
+There are also instances where Punxsutawney Phil has "No Record". For the purposes of answering our question we also want to remove this data.
+
+```{r}
+# Data pipeline
+groundhog_clean <- groundhog_clean %>%
+  # Filter out the data we don't want using !=
+  filter(Punxsutawney.Phil != "No Record")
+```
+
+
+
+### Change column names
 
 We sometimes import column names which are difficult to work with or do not adequately reference the data. Column names can be changed in numerous ways. This course will use the Rename() function of tidyverse.
 
@@ -248,7 +283,7 @@ groundhog_renamed <- groundhog_renamed %>%
   clean_names()
 ```
 
-## 7. Data Clean-up - Change table layout
+### Change column layout
 
 Often times, we want to manipulate our tables so that the columns are in a logical order. There are many ways to accomplish this task. 
 
@@ -264,4 +299,35 @@ groundhog_layout <- groundhog_renamed %>%
 ```{r}
 
 ```
+
+### Convert column to appropriate type
+make this numeric LAURA
+
+```{r}
+# Raw Data pipeline
+groundhog_layout %>%
+  # Filter out full and partial shadow predictions (not part of the question)
+  filter(punxsutawney_phil != "Full Shadow", punxsutawney_phil != "Partial Shadow") %>%
+  # Make a plot of the data. 
+  ggplot(aes(y = year, x = feb_pennsylvania, fill = punxsutawney_phil)) + 
+  geom_col()
+```
+Lets just see if the temperature is above 32. 
+
+**To do** The full code block has been copy/pasted from above. Add a filter which grabs only feb_average values above 32 degrees. Remember to add a pipeline.
+
+```{r}
+# Raw Data pipeline
+groundhog_layout %>%
+  # Filter out full and partial shadow predictions (not part of the question)
+  filter(punxsutawney_phil != "Full Shadow", punxsutawney_phil != "Partial Shadow") %>%
+  # Additional Filter - don't forget the %>%
+  filter(feb_pennsylvania >32) %>%
+  # Make a plot of the data. 
+  ggplot(aes(y = year, x = feb_pennsylvania, fill = punxsutawney_phil)) + 
+  geom_col()
+```
+
+
+
 
