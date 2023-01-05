@@ -33,45 +33,35 @@ We will cover:
   
 
 ## 0. Awards and Accolades!
-  ![](images/GoldenBison.png){width=200px} </br>
-  Congratulations to Rachel, Kara, Carolyn, Rebecca, Ann, Jessica, Helen, and Anna: our first Golden Bison recipients.
-    
-  These individuals all successfully competed the second SWNC training on Github.
+  ![](images/GoldenBison.png){width=250px, align=center} </br>
+  Congratulations to Rachel, Kara, Carolyn, Rebecca, Ann, Jessica, Helen, and Anna: our Golden Bison recipients. These individuals all successfully competed the second SWNC training on Github.
   
 ## 1. GitHub Review
 1. Send Laura your GitHub username so that she can give you editing access to the repo.
 
-    *Note for recording listeners*: You will not have editing access to the repository, you can still create a clone and follow along with a local copy (rather than a branch). Please skip steps 2.2 and 2.5.
+    *Note for recording listeners*: You will not have editing access to the repository, you can still create a clone and follow along with a local copy (rather than a branch). Please skip steps 2, 3 and 6.
 
-### Create a Branch
+2. Go to the location of the repository at [https://github.com/palacila/SWNC_3_Data_Wrangling](https://github.com/palacila/SWNC_3_Data_Wrangling). 
 
-1. Create a branch: Go to the location of the [SWNC Data Wrangling Repository on GitHub](https://github.com/palacila/SWNC_3_Data_Wrangling). 
+3. Click on the **main dropdown** in the upper left, and begin typing your name separated by underscores. Once complete, click on **'Create branch:*your name* from main'**. This will create your branch! 
 
-2. Click on the **main dropdown** in the upper left, and begin typing your name separated by underscores. Once complete, click on **'Create branch:*your name* from main'**. This will create your branch! 
+  ![](images/CreateBranch.png){width=350px, align=center} </br>
 
-```{r createbranch, echo=FALSE, out.width="50%",fig.align="center"}
-include_graphics("images/CreateBranch.png")
-```
-
-3. Clone the Repo
+4. Clone the Repo
 Click on **code** in the upper right, and copy the HTTPS url provided. 
 
-```{r CloneRepo, echo=FALSE, out.width="30%",fig.align="center"}
-include_graphics("images/CloneRepo.png")
-```
+  ![](images/CloneRepo.png){width=250px, align=center} </br>
 
-4. Open R Studio. Go to **File>NewProject>VersionControl>Git** . Paste the repository URL. Information and download location should auto-populate. Click **Create Project**.
+5. Open R Studio. Go to **File>NewProject>VersionControl>Git** . Paste the repository URL. Information and download location should auto-populate. Click **Create Project**.
 
-5. Switch to your branch in R studio. 
+6. Switch to your branch in R studio. 
 
     Navigate to the Git Panel (upper right) in RStudio. If it is not there, you can go to **View >ShowGit** to view it.
 Click the drop down menu in the upper right and select your branch name to switch to your branch!  
 
-```{r SwitchBranches, echo=FALSE, out.width="50%", fig.align="center"}
-include_graphics("images/SwitchBranch.png")
-```
+  ![](images/SwitchBranch.png){width=500px} </br>
 
-6. Open the RMD file titled **Data_Wrangling_Learner.RMD** by using the file tab in the lower right corner of R studio.
+7. Open the RMD file titled **Data_Wrangling_Learner.RMD** by using the file tab in the lower right corner of R studio.
 
     We will be filling in the blanks of this document, then pushing the completed RMD files back onto GitHub. Please note that **Data_Wrangling_Main.RMD** is a completed copy of this lesson plan which can be used as reference. 
     
@@ -84,40 +74,23 @@ include_graphics("images/SwitchBranch.png")
 
 **To do** Load the library by using library()
 ```{r}
-# Do not fear the install notifications. This is expected.
+# Do not fear the notifications. This is expected.
 library(csv)
 ```
     
 Import the file
 
-What file types can be imported? Most file types will have their own library to make it easy to bring the data into R studio. Unsure what to use? Google "r read in <file type> file" to find the appropriate library.
+What file types can be imported? Most file types will have their own library to make it easy to bring the data into R studio. Unsure what to use? Google "r read in file-type" to find the appropriate library.
 
 
 Today we will be using a CSV file, as this is the most common export from our databases.This file was modified from a public dataset located here [Groundhog data](https://www.kaggle.com/datasets/groundhogclub/groundhog-day)
+
 
 **To do** Use the read.csv() function to read in the csv from the data/ folder. Use <- to assign it to the variable name groundhog_raw
 ```{r}
 # Import the dataset
 groundhog_raw <- read.csv("data/Groundhog_Data.csv")
 ```
-
-### The Question!
-
-How often did Punxsutawney Phil correctly predict that Pennsylvania would have an early spring (an average temperature above freezing) in February? 
-
-Here is a visualization of the data we'll be working with. Stay tuned for further training if you want to learn how to make pretty graphs!
-```{r}
-# Raw Data pipeline
-groundhog_raw %>%
-  # Filter out full and partial shadow predictions (not part of the question)
-  filter(Punxsutawney.Phil != "Full Shadow", Punxsutawney.Phil != "Partial Shadow") %>%
-  # Make a plot of the data. 
-  ggplot(aes(y = Year, x = February.Average.Temperature..Pennsylvania., fill = Punxsutawney.Phil)) + 
-  geom_col()
-```
-
-
-
 
 ## 3. View the file
 
@@ -131,16 +104,16 @@ There are also quick functions which can be used to quickly assess our imported 
 head(groundhog_raw)
 ```
 ```{r}
-# You can add more arguments to the function. The inclusion of the integer "10" will show the first 10 rows instead of the default 5. 
+# You can add more arguments to the function. The inclusion of the integer "4" will show the first 10 rows instead of the default 5. 
 
-head(groundhog_raw, 10)
+head(groundhog_raw, 4)
 ```
 
-**To do** Following the same format as above, use the tail() function to view the last 7 rows of groundhog_raw.
+**To do** Following the same format as above, use the tail() function to view the last 3 rows of groundhog_raw.
 
 ```{r}
 # tail pulls the last rows of the data
-tail(groundhog_raw,7)
+tail(groundhog_raw,3)
 ```
 
 We can also look at summary statistics to gain more understanding of the dataset we've imported. 
@@ -160,74 +133,59 @@ The last task we'll do is count the number of rows in our current dataframe.
 # The output should match the dataframe details in your environment (132 obs.)
 nrow(groundhog_raw)
 
-# The output hsould match the dataframe details in  your environment(10 variables)
+# The output should match the dataframe details in  your environment(10 variables)
 ncol(groundhog_raw)
 ```
+## 4.The Question!
+
+**Did Punxsutawney Phil predict an early spring (no shadow) correctly (average temperature above freezing) in February in Pennsylvania between the years 1900 and 2000? **
+
+Below is a visualization of the data we are interested in. Stay tuned for further training if you want to learn how to make pretty graphs! 
+
+Notice that there are still some problems in the raw data (such as missing records) which should be addressed. 
+
+![](images/Groundhog_Raw_Graph.png){width=500px, align=center} </br>
 
 
-## 4. Data Clean-up
+Remember the question:
+**Did Punxsutawney Phil predict an early spring (no shadow) correctly (average temperature above freezing) in February in Pennsylvania between the years 1900 and 2000? **
 
-### Remove rows with missing data.
+What we need to do: 
 
-Now we will clean up this data. There are many different functions and libraries that can be used. This training will focus on tidyverse. This is a set of libraries which are commonly used and all work in conjunction with one another.
+a. Tidy the column names
 
-**To do** If you do not have tidyverse installed, use **install.packages("tidyverse")** in the console to install. 
+b. Clean up missing data
 
-**To do** Load the library by using library()
-```{r}
-# Do not fear the install notifications, there will be many. This is expected.
-library(tidyverse)
-```
+c. Filter for predict early spring (Punxsutawney Phil = No Shadow)
 
-The first thing we will do is remove the rows which contain NAs. 
+d. Filter for temperature above freezing (Average Pennsylvania temp > 32)
 
-**To do** Use tidyverse functions to remove NAs We will practice using a pipeline (%>%), which will allows you to "stack" functions.
-```{r}
-# Notice that the output has 9 fewer rows (123 obs.)
-groundhog_raw %>%
-  drop_na()
-```
+e. Convert and filter year range (year>1900 and year < 2000)
 
-**To do** View the new dataframe and sort by the column Punxsutawney.Phil.  Notice there is an empty string for year 1901-2000. This was not dropped in the previous code block due to the character data type. 
+f. Bonus: Change column layout to include only the data we want.
 
 
-**To do** Using tidyverse, replace the null character values with na_if(). Then, use drop_na() to remove ALL missing data. Save the output as a new dataframe, groundhog_clean.
-```{r}
-# new_dataframe <- raw_dataframe %>% replace Null with NA %>% remove all NAs
-# Output should contain 122 rows.
-groundhog_clean <- groundhog_raw %>%
-  na_if("") %>%
-  drop_na()
-  
-```
+## 5. Data Clean-up
 
-Note: We have only covered missing row removal in this course. When dealing with large-scale numeric data, there is a number of other options (such as replacing nulls with the median value or with the average of neighboring values) which may be employed.
-
-### Filter data
-There are also instances where Punxsutawney Phil has "No Record". For the purposes of answering our question we also want to remove this data.
-
-```{r}
-# Data pipeline
-groundhog_clean <- groundhog_clean %>%
-  # Filter out the data we don't want using !=
-  filter(Punxsutawney.Phil != "No Record")
-```
-
-
-
-### Change column names
-
+### a. Change column names
 We sometimes import column names which are difficult to work with or do not adequately reference the data. Column names can be changed in numerous ways. This course will use the Rename() function of tidyverse.
 
-**To Do** Print out the current column names of groundhog_clean using the colnames() function using all defaults. We will only need to supply the dataframe name.
+**To Do** Print out the current column names of groundhog_clean using the colnames() function.
 ```{r}
-colnames(groundhog_clean)
+colnames(groundhog_raw)
 ```
 
-**To do** Rename "February.Average.Temperature..Midwest."  to Feb_Mid. Create a new dataframe called groundhog_renamed
+Tidyverse uses a pipeline (%>%) to denote a continuous chain of functions (the first output becomes the next input)
+
+
+
+
+
+
+**To do** Create a new dataframe called groundhog_renamed. Pipeline from groundhog_raw. Use the rename function to rename "February.Average.Temperature..Midwest." to Feb_Mid. 
 ```{r}
 # New Variable <- Old Variable pipleline
-groundhog_renamed <- groundhog_clean %>%
+groundhog_renamed <- groundhog_raw %>%
   #rename(new name = old name)
   rename(Feb_Mid = February.Average.Temperature..Midwest.,) 
 ```
@@ -283,7 +241,57 @@ groundhog_renamed <- groundhog_renamed %>%
   clean_names()
 ```
 
-### Change column layout
+
+### a. Remove rows with missing data.
+
+Now we will clean up this data. There are many different functions and libraries that can be used. This training will focus on tidyverse. This is a set of libraries which are commonly used and all work in conjunction with one another.
+
+**To do** If you do not have tidyverse installed, use **install.packages("tidyverse")** in the console to install. 
+
+**To do** Load the library by using library()
+```{r}
+# Do not fear the install notifications, there will be many. This is expected.
+library(tidyverse)
+```
+
+The first thing we will do is remove the rows which contain NAs. 
+
+**To do** Use tidyverse functions to remove NAs We will practice using a pipeline (%>%), which will allows you to "stack" functions.
+```{r}
+# Notice that the output has 9 fewer rows (123 obs.)
+groundhog_raw %>%
+  drop_na()
+```
+
+**To do** View the new dataframe and sort by the column Punxsutawney.Phil.  Notice there is an empty string for year 1901-2000. This was not dropped in the previous code block due to the character data type. 
+
+
+**To do** Using tidyverse, replace the null character values with na_if(). Then, use drop_na() to remove ALL missing data. Save the output as a new dataframe, groundhog_clean.
+```{r}
+# new_dataframe <- raw_dataframe %>% replace Null with NA %>% remove all NAs
+# Output should contain 122 rows.
+groundhog_clean <- groundhog_raw %>%
+  na_if("") %>%
+  drop_na()
+  
+```
+
+Note: We have only covered missing row removal in this course. When dealing with large-scale numeric data, there is a number of other options (such as replacing nulls with the median value or with the average of neighboring values) which may be employed.
+
+### b. Filter data
+There are also instances where Punxsutawney Phil has "No Record". For the purposes of answering our question we also want to remove this data.
+
+```{r}
+# Data pipeline
+groundhog_clean <- groundhog_clean %>%
+  # Filter out the data we don't want using !=
+  filter(Punxsutawney.Phil != "No Record")
+```
+
+
+
+
+### d. Change column layout
 
 Often times, we want to manipulate our tables so that the columns are in a logical order. There are many ways to accomplish this task. 
 
@@ -300,8 +308,10 @@ groundhog_layout <- groundhog_renamed %>%
 
 ```
 
-### Convert column to appropriate type
+### e. Convert column to appropriate type
 make this numeric LAURA
+
+## 3.The Answer!
 
 ```{r}
 # Raw Data pipeline
