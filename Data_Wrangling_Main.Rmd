@@ -39,7 +39,7 @@ We will cover:
 ## 1. GitHub Review
 1. Send Laura your GitHub username so that she can give you editing access to the repo.
 
-    *Note for recording listeners*: You will not have editing access to the repository, you can still create a clone and follow along with a local copy (rather than a branch). Please skip steps 2, 3 and 6.
+    *Note for recording listeners*: You can still complete this training without repo editing access. If you prefer, complete only GitHub Review steps 4 and 5 to download a local, editable copy of the training to your machine. The only difference is that you will not be able to push your completed training back onto GitHub.
 
 2. Go to the location of the repository at [https://github.com/palacila/SWNC_3_Data_Wrangling](https://github.com/palacila/SWNC_3_Data_Wrangling). 
 
@@ -70,7 +70,7 @@ Click the drop down menu in the upper right and select your branch name to switc
 
 ## 2. Importing a CSV as a data frame
 
-**To do** If you do not have tidyverse installed, use **install.packages("csv")** in the console to install. 
+**To do** If you do not have csv installed, use **install.packages("csv")** in the console to install. 
 
 **To do** Load the library by using library()
 ```{r}
@@ -83,10 +83,10 @@ Import the file
 What file types can be imported? Most file types will have their own library to make it easy to bring the data into R studio. Unsure what to use? Google "r read in file-type" to find the appropriate library.
 
 
-Today we will be using a CSV file, as this is the most common export from our databases.This file was modified from a public dataset located here [Groundhog data](https://www.kaggle.com/datasets/groundhogclub/groundhog-day)
+We will be using a CSV file for this training, found here: [Groundhog data](https://www.kaggle.com/datasets/groundhogclub/groundhog-day). The file has already been placed into the data folder of this repo.
 
 
-**To do** Use the read.csv() function to read in the csv from the data/ folder. Use <- to assign it to the variable name groundhog_raw
+**To do** Use the read.csv() function to read in the csv from the data folder. Use <- to assign it to the variable name groundhog_raw
 ```{r}
 # Import the dataset
 groundhog_raw <- read.csv("data/Groundhog_Data.csv")
@@ -94,41 +94,46 @@ groundhog_raw <- read.csv("data/Groundhog_Data.csv")
 
 ## 3. View the file
 
-**To do** The data you just imported will appear in the environment (top right corner). Single click to open a new tab and view the data table. Use the arrows next to the column headers to sort and view the data in different ways.
+**To do** The data you just imported will appear in the environment (top right corner). Single click the title to open a new tab and view the data table. Use the arrows next to the column headers to sort and view the data in different ways.
 
 
-There are also quick functions which can be used to quickly assess our imported data without viewing the whole file. This is particularly helpful for large data sets with thousands of rows.
+There are also quick functions which can be used to quickly assess our imported data without viewing the whole file.
 
+Head() will show the first rows of data.
+**To do** Run the code chunk below by clicking on the green arrow.
 ```{r}
-# head can be used to show the first few rows. By clicking the green arrow in the corner of the code block, the output will print below.
+# First rows of groundhog_raw, default is 5 rows
 head(groundhog_raw)
 ```
-```{r}
-# You can add more arguments to the function. The inclusion of the integer "4" will show the first 10 rows instead of the default 5. 
 
+**To do** Run the code chunk below by clicking on the green arrow.
+```{r}
+# You can add more arguments to the function. The inclusion of the integer "4" will show the first 4.
 head(groundhog_raw, 4)
 ```
 
-**To do** Following the same format as above, use the tail() function to view the last 3 rows of groundhog_raw.
 
+Similarly, tail() can be used to see the end of the imported dataset.
+
+**To do** Use the tail() function to view the last 3 rows of groundhog_raw.
 ```{r}
-# tail pulls the last rows of the data
+# View the last three rows of groundhog_raw
 tail(groundhog_raw,3)
 ```
 
-We can also look at summary statistics to gain more understanding of the dataset we've imported. 
+
+We can also look at summary statistics to gain more understanding of the dataset we've imported. Numeric data will show calculated statistics and missing data. Other data types will be noted with only their type.
 
 **To do** Use the summary() function on groundhog_raw.
 ```{r}
-# We will use all default arguments, only the dataset name needs to be supplied.
+# View the summary statistics of groundhog_raw
 summary(groundhog_raw)
 ```
 
-Notice that there is not only min and max values, but also NA values.
 
-The last task we'll do is count the number of rows in our current dataframe.
+The last task we'll do is count the number of rows and columns in our current dataframe.
 
-*To do* Run nrow() and ncol() using all defaults. We will only need to supply the dataframe name.
+*To do* Run nrow() and ncol().
 ```{r}
 # The output should match the dataframe details in your environment (132 obs.)
 nrow(groundhog_raw)
@@ -136,9 +141,10 @@ nrow(groundhog_raw)
 # The output should match the dataframe details in  your environment(10 variables)
 ncol(groundhog_raw)
 ```
+
 ## 4.The Question!
 
-**Did Punxsutawney Phil predict an early spring (no shadow) correctly (average temperature above freezing) in February in Pennsylvania between the years 1900 and 2000? **
+**Did Punxsutawney Phil predict an early spring (no shadow) correctly (February average temperature above freezing) in Pennsylvania from 1900-2000? **
 
 Below is a visualization of the data we are interested in. Stay tuned for further training if you want to learn how to make pretty graphs! 
 
@@ -148,7 +154,7 @@ Notice that there are still some problems in the raw data (such as missing recor
 
 
 Remember the question:
-**Did Punxsutawney Phil predict an early spring (no shadow) correctly (average temperature above freezing) in February in Pennsylvania between the years 1900 and 2000? **
+**Did Punxsutawney Phil predict an early spring correctly in Pennsylvania from 1900-2000? **
 
 What we need to do: 
 
@@ -156,33 +162,55 @@ a. Tidy the column names
 
 b. Clean up missing data
 
-c. Filter for predict early spring (Punxsutawney Phil = No Shadow)
+c. Phil's prediction: Filter for predict early spring (Punxsutawney Phil = No Shadow)
 
-d. Filter for temperature above freezing (Average Pennsylvania temp > 32)
+d. Was he right: Filter for temperature above freezing (February Average Temperature Pennsylvania > 32)
 
-e. Convert and filter year range (year>1900 and year < 2000)
-
-f. Bonus: Change column layout to include only the data we want.
-
+e. Time frame: Convert to numeric and filter year range (year>1900 and year < 2000)
 
 ## 5. Data Clean-up
 
-### a. Change column names
-We sometimes import column names which are difficult to work with or do not adequately reference the data. Column names can be changed in numerous ways. This course will use the Rename() function of tidyverse.
+### a. Tidy column names
+We sometimes import column names which are difficult to work with or do not adequately reference the data. Lets look at our imported dataset.
 
-**To Do** Print out the current column names of groundhog_clean using the colnames() function.
+**To Do** Print out the current column names of groundhog_raw using the colnames() function.
 ```{r}
 colnames(groundhog_raw)
 ```
 
-Tidyverse uses a pipeline (%>%) to denote a continuous chain of functions (the first output becomes the next input)
 
+Column names can be changed in numerous ways. This course will use the tidyverse library package.
 
+**To do** If you do not have tidyverse installed, use **install.packages("tidyverse")** in the console to install. 
 
+**To do** Load the library by using library()
+```{r}
+# Do not fear the notifications, there will be many. This is expected.
+library(tidyverse)
+```
 
+When using tidyverse, it is important to understand the pipeline (%>%). A pipeline denote a continuous chain of functions (output becomes the input of the following function).
+
+While not necessary, the pipeline is strongly recommended as a tool to streamline your code. Below is an example which includes the same task both with and without a pipeline.
+
+![](images/Groundhog_Pipeline.png){align=center} </br>
+In a code block structure these two processes would look like:
+*With Pipeline*
+groundhog_final <- groundhog %>%
+ eyes() %>%
+ nose() %>%
+ mouth()
+
+*Without Pipeline*
+groundhog_eyes <- eyes(groundhog)
+groundhog_nose <- nose(groundhog_eyes)
+groundhog_final <- mouth(groundhog_nose)
+
+The pipeline allows use to easily visualize the processes that are occurring without needing to create a new object each time.
 
 
 **To do** Create a new dataframe called groundhog_renamed. Pipeline from groundhog_raw. Use the rename function to rename "February.Average.Temperature..Midwest." to Feb_Mid. 
+*hint* Remember the help function of R studio will list required inputs and the format they should be in.
 ```{r}
 # New Variable <- Old Variable pipleline
 groundhog_renamed <- groundhog_raw %>%
@@ -190,9 +218,7 @@ groundhog_renamed <- groundhog_raw %>%
   rename(Feb_Mid = February.Average.Temperature..Midwest.,) 
 ```
 
-There are also many options for batch renaming, which can use pattern-matching to rename columns. While this can be more complicated, it can be a great time-saver when working with multiple imported files. 
-
-This is an example of renaming using index location (column number). While this can be speedy and efficient, it will break if you alter the column order. It is not often advised for continuous processing tasks.
+Below is an example of renaming using index location (column number) rather than column name. While this can be speedy and efficient, it will break if you alter the column order. It is not often advised for continuous processing tasks.
 ```{r}
 # New Variable <- Old Variable pipleline
 groundhog_renamed <- groundhog_renamed %>%
@@ -201,15 +227,15 @@ groundhog_renamed <- groundhog_renamed %>%
     Mar_Average = 7)
 ```
 
+There are also many options for batch renaming, which can use pattern-matching to rename columns. While this can be more complicated, it can be a great time-saver when working with multiple imported files. 
 
 This is an example of a batch rename based on pattern matching. While it looks complicated, it can simply be copy/pasted into your own code, just change the inputs to what you need!
 ```{r}
 # Dataframe pipeline
 groundhog_renamed <- groundhog_renamed %>%
-  # Call rename_with. Use the function (copied from online) substitutes Feb_ for the longer string.
+  # Call rename_with. Use the function (copied from online) to substitute Feb_ for the longer string.
   rename_with(function(x){gsub("February.Average.Temperature..","Feb_",x)})
 ```
-
 
 **To do** Copy/paste the above code, alter the text to complete the same process for March.
 ```{r}
@@ -219,11 +245,10 @@ groundhog_renamed <- groundhog_renamed %>%
 ```
 
 
-The janitor library can also help with built-in column name cleanup processes. It will remove any any characters that are not lower-case letters, underscores, or numbers. It is commonly used in conjuntion with the tidyverse library, but must be loaded separately.
 
-In our dataset, the janitor library will get rid of the periods and standardize our capitalization.We will use it now.
+The janitor library can also help with built-in column name cleanup processes. It will remove any any characters that are not lower-case letters, underscores, or numbers. It is commonly used in conjunction with the tidyverse library, but must be loaded separately.
 
-**To do** If you do not have tidyverse installed, use **install.packages("janitor")** in the console to install. 
+**To do** If you do not have janitor installed, use **install.packages("janitor")** in the console to install. 
 
 **To do** Load the library by using library()
 ```{r}
@@ -231,10 +256,8 @@ In our dataset, the janitor library will get rid of the periods and standardize 
 library(janitor)
 ```
 
+In our dataset, the janitor library will get rid of the periods and standardize our capitalization.
 **To do** Begin with *groundhog_renamed <-* to replace our current working dataset. Create a pipeline which calls the function clean_names() on groundhog_renamed.
-
-
-Call the clean names function.
 ```{r}
 # Janitor does the work for us.
 groundhog_renamed <- groundhog_renamed %>%
@@ -242,44 +265,46 @@ groundhog_renamed <- groundhog_renamed %>%
 ```
 
 
-### a. Remove rows with missing data.
+### b. Clean up missing data.
 
-Now we will clean up this data. There are many different functions and libraries that can be used. This training will focus on tidyverse. This is a set of libraries which are commonly used and all work in conjunction with one another.
+There are many different functions and libraries that can be used for data cleanup. Again, this training will focus on tidyverse. 
 
-**To do** If you do not have tidyverse installed, use **install.packages("tidyverse")** in the console to install. 
 
-**To do** Load the library by using library()
-```{r}
-# Do not fear the install notifications, there will be many. This is expected.
-library(tidyverse)
-```
+The first thing we will do is remove the rows which contain NAs. Luckily, there's a function for this. 
 
-The first thing we will do is remove the rows which contain NAs. 
-
-**To do** Use tidyverse functions to remove NAs We will practice using a pipeline (%>%), which will allows you to "stack" functions.
+**To do** From groundhog_raw, pipeline ot the tidyverse function remove_na().
 ```{r}
 # Notice that the output has 9 fewer rows (123 obs.)
 groundhog_raw %>%
   drop_na()
 ```
 
-**To do** View the new dataframe and sort by the column Punxsutawney.Phil.  Notice there is an empty string for year 1901-2000. This was not dropped in the previous code block due to the character data type. 
+**To do** View the new dataframe and sort by the column Punxsutawney.Phil.  Notice there is an empty string for year 1901-2000. This was not dropped in the previous code block due to the character (not numeric) data type. 
 
 
-**To do** Using tidyverse, replace the null character values with na_if(). Then, use drop_na() to remove ALL missing data. Save the output as a new dataframe, groundhog_clean.
+**To do** Create a new output called groundhog_clean. Using a tidyverse pipeline from groundhog_raw, replace the null character values with na_if(""). Then, pipeline drop_na() to remove ALL missing data.
 ```{r}
 # new_dataframe <- raw_dataframe %>% replace Null with NA %>% remove all NAs
 # Output should contain 122 rows.
 groundhog_clean <- groundhog_raw %>%
   na_if("") %>%
   drop_na()
-  
 ```
 
-Note: We have only covered missing row removal in this course. When dealing with large-scale numeric data, there is a number of other options (such as replacing nulls with the median value or with the average of neighboring values) which may be employed.
+Note: We have only covered missing row removal in this course. When dealing with large-scale numeric data, there are a number of other options which may be employed.
 
-### b. Filter data
-There are also instances where Punxsutawney Phil has "No Record". For the purposes of answering our question we also want to remove this data.
+But there is still a problem with the data!
+![](images/Groundhog_Raw_Graph.png){width=500px, align=center} </br>
+
+From the graph of the raw data, we know there are instances where Punxsutawney Phil has "No Record". For the purposes of answering our question we also want to remove this data.
+**To do** Take a look at the current unique values by running the code chunk below.
+```{r}
+# Focus on Punxsutawney Phil outcome
+groundhog_clean$Punxsutawney.Phil %>%
+  # find unique values
+  unique()
+
+```
 
 ```{r}
 # Data pipeline
@@ -288,7 +313,15 @@ groundhog_clean <- groundhog_clean %>%
   filter(Punxsutawney.Phil != "No Record")
 ```
 
+### b. Filter for predict early spring
 
+**To do** Use the filter function for Punxsutawney.Phil = No Shadow"
+```{r}
+# Data pipeline
+groundhog_clean <- groundhog_clean %>%
+  # Filter out the data we don't want using !=
+  filter(Punxsutawney.Phil != "No Record")
+```
 
 
 ### d. Change column layout
