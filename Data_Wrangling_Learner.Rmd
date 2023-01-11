@@ -270,7 +270,7 @@ library(janitor)
 
 
 clean_names() from the janitor library will transform any characters that are not lower-case letters, underscores, or numbers. 
-**To do** Begin with *groundhog_edited <-* to replace our current working data set. Create a pipeline which calls the function clean_names() on groundhog_renamed.
+**To do** Begin with *groundhog_edited <-* to replace our current working data set. Create a pipeline which calls the function clean_names() on groundhog_edited.
 ```{r}
 # Janitor does the work for us.
 
@@ -354,10 +354,10 @@ Like before, we want to use the filter function to pull out only the "No Shadow"
 ```{r}
 # Data pipeline
 
-  # Filter out the data we don't want using !=. Quotation marks indicate a character string.
+  # Filter out the data we don't want using ==. Quotation marks indicate a character string.
   
 
-# There should now be 101 observations in the dataframe
+# There should now be 15 observations in the dataframe
 ```
 
 
@@ -373,7 +373,7 @@ Filtering can also be performed on a numeric column. Lets filter our data set to
   # Use the > symbol for the logical test.
   
 
-# There should now be 12 observations in the dataframe
+# There should now be 2 observations in the dataframe
 ```
 ____________________________________________________________________________
 ### d. Convert and filter year range
@@ -402,7 +402,7 @@ Now that our column is numeric, we can use a numeric test to filter out data.
   # Use & to indicate both statements must be TRUE
   
 
-# There should now be 10 observations in the data frame
+# There should still be 2 observations in the data frame
 ```
 ____________________________________________________________________________
 
@@ -415,7 +415,7 @@ Often times, we want to manipulate our tables so that the columns are in a logic
   # Use & to indicate both statements must be TRUE
   
 
-# There should now be 10 observations of only 3 variables(columns)
+# There should now be 2 observations of only 3 variables(columns)
 ```
 
 We can also move the column order
@@ -459,7 +459,7 @@ groundhog_final <- groundhog_raw %>%
   drop_na() %>%
   
   # Filter the data using a logical test on a character
-  filter(punxsutawney_phil != "No Shadow") %>%
+  filter(punxsutawney_phil == "No Shadow") %>%
   # Filter the data using a logical test on a number
   filter(feb_pennsylvania >32) %>%
   
