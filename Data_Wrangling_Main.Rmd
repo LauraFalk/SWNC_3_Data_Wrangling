@@ -201,7 +201,7 @@ Column names can be changed in numerous ways. This course will use the tidyverse
 library(tidyverse)
 ```
 
-When using tidyverse, it is important to understand the pipeline (%>%). A pipeline denote a continuous chain of functions (output becomes the input of the following function).
+When using tidyverse, it is important to understand the pipeline (%>%). A pipeline denotes a continuous chain of functions (output becomes the input of the following function).
 
 While not necessary, the pipeline is strongly recommended as a tool to streamline your code. It allows us to easily visualize the processes that are occurring without needing to create a new object each time.
 
@@ -270,7 +270,7 @@ library(janitor)
 ```
 
 
-clean_names() from the janitor library will transform any any characters that are not lower-case letters, underscores, or numbers. 
+clean_names() from the janitor library will transform any characters that are not lower-case letters, underscores, or numbers. 
 **To do** Begin with *groundhog_edited <-* to replace our current working data set. Create a pipeline which calls the function clean_names() on groundhog_renamed.
 ```{r}
 # Janitor does the work for us.
