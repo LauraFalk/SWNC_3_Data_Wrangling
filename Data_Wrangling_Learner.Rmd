@@ -91,7 +91,7 @@ We will be using a CSV file for this training, found here: [Groundhog data](http
 **To do** Use the read.csv() function to read in the csv from the data folder. Use <- to assign it to the variable name groundhog_raw.
 ```{r}
 # Import the dataset
-groundhog_raw <- 
+groundhog_raw <- read.csv("data/Groundhog_Data.csv")
 ```
 ______________________________________________________________________________
 ## 3. View the file
@@ -126,6 +126,7 @@ Similarly, tail() can be used to see the end of the imported data set.
 **To do** Use the tail() function to view the last 3 rows of groundhog_raw.
 ```{r}
 # View the last three rows of groundhog_raw
+tail(groundhog_raw,3)
 
 ```
 
@@ -135,7 +136,7 @@ We can also look at summary statistics to gain more understanding of the data se
 **To do** Use the summary() function on groundhog_raw.
 ```{r}
 # View the summary statistics of groundhog_raw
-
+summary(groundhog_raw)
 ```
 
 
@@ -187,7 +188,7 @@ We sometimes import column names which are difficult to work with or do not adeq
 
 **To Do** Print out the current column names of groundhog_raw using the colnames() function.
 ```{r}
-
+colnames(groundhog_raw)
 ```
 
 
@@ -227,9 +228,8 @@ Lets start working on our data.
 *hint* Remember the help function of R studio will list required inputs and the format they should be in.
 ```{r}
 # New Variable <- Old Variable pipeline
-
-  #rename(new name = old name)
-
+groundhog_edited <- groundhog_raw %>%
+  rename("Feb_Mid" = February.Average.Temperature..Midwest.)
 ```
 
 Below is an example of renaming using index location (column number) rather than column name. While this can be speedy and efficient, it will break if you alter the column order. It is not often advised for continuous processing tasks.
@@ -254,6 +254,9 @@ groundhog_edited <- groundhog_edited %>%
 **To do** Copy/paste the above code, alter the text to complete the same process for March.
 ```{r}
 # March renaming function
+groundhog_edited <- groundhog_edited %>%
+  # Call rename_with. Use the function (copied from online) to substitute Feb_ for the longer string.
+  rename_with(function(x){gsub("March.Average.Temperature..","Mar_",x)})
 
 ```
 
@@ -273,6 +276,8 @@ clean_names() from the janitor library will transform any characters that are no
 **To do** Begin with *groundhog_edited <-* to replace our current working data set. Create a pipeline which calls the function clean_names() on groundhog_renamed.
 ```{r}
 # Janitor does the work for us.
+groundhog_edited <- groundhog_edited %>%
+  clean_names()
 
 ```
 ______________________________________________________________________________
@@ -306,11 +311,11 @@ na_if() is a function which will replace a specified character string with a nul
 **To do** Begin with *groundhog_edited <-* to replace our current working data set. Using a tidyverse pipeline from groundhog_raw, replace the null character values with na_if(""). Then, pipeline drop_na() to remove ALL missing data.
 ```{r}
 # new_dataframe <- raw_dataframe pipeline
-
+groundhog_edited <- groundhog_edited %>%
   # replace empty with NA pipeline
-  
+  na_if("") %>%
   # remove all NAs from dataframe
-  
+  drop_na()
 
 # groundhog_edited should now contain 122 rows.
 ```
@@ -322,9 +327,9 @@ For the purposes of answering our question we also want to remove this data.
 **To do** Begin with *groundhog_filtered <-* to create a new working data set. Pipeline from groundhog edited and use the filter() function with punxsutawney_phil != "No Record" to remove the missing records.
 ```{r}
 # new_dataframe <- raw_dataframe pipeline
-
+groundhog_filtered <- groundhog_edited %>%
   # != means does not equal
-  
+  filter(punxsutawney_phil != "No Record")
 
 #There should be 116 observations in this new data frame.
 ```
@@ -353,9 +358,9 @@ Like before, we want to use the filter function to pull out only the "No Shadow"
 **To do** Begin with *groundhog_filtered <-* to replace our current working data set. Using a tidyverse pipeline from groundhog_filtered, use the filter function with punxsutawney_phil = No Shadow"
 ```{r}
 # Data pipeline
-
-  # Filter out the data we don't want using !=. Quotation marks indicate a character string.
-  
+groundhog_filtered <- groundhog_filtered %>%
+  # Filter out the data we don't want using ==. Quotation marks indicate a character string.
+  filter(punxsutawney_phil == "No Shadow")
 
 # There should now be 101 observations in the dataframe
 ```
@@ -369,8 +374,9 @@ Filtering can also be performed on a numeric column. Lets filter our data set to
 **To do** Begin with *groundhog_filtered <-* to replace our current working data set. Using a tidyverse pipeline from groundhog_filtered, use the filter function with feb_pennsylvania >32
 ```{r}
 # Data pipeline
-
+groundhog_filtered <- groundhog_filtered %>%
   # Use the > symbol for the logical test.
+  filter(feb_pennsylvania > 32)
   
 
 # There should now be 12 observations in the dataframe
@@ -398,9 +404,9 @@ Now that our column is numeric, we can use a numeric test to filter out data.
 **To do** Begin with *groundhog_filtered <-* to replace our current working data set. Using a tidyverse pipeline from groundhog_filtered, use the filter function with year >= "1900-01-01" and year < "2001-01-01"
 ```{r}
 # Data pipeline
-
+groundhog_filtered <- groundhog_filtered %>%
   # Use & to indicate both statements must be TRUE
-  
+  filter(year >= "1900-01-01" & year < "2001-01-01")
 
 # There should now be 10 observations in the data frame
 ```
@@ -411,9 +417,9 @@ Often times, we want to manipulate our tables so that the columns are in a logic
 
 **To do** Begin with *groundhog_layout <-* to create a new working data set. Using a tidyverse pipeline from groundhog_filtered, use select() to choose only the columns for answering our question (year, punxutawney_phil, and feb_pennsylvania)
 ```{r}
-
-  # Use & to indicate both statements must be TRUE
-  
+groundhog_layout <- groundhog_filtered %>%
+  #
+  select(year, punxsutawney_phil, feb_pennsylvania)
 
 # There should now be 10 observations of only 3 variables(columns)
 ```
@@ -422,9 +428,9 @@ We can also move the column order
 **To do** Begin with *groundhog_layout <-* to replace our current working data set. Using a tidyverse pipeline from groundhog_layout, use relocate to pull the column punxsutawney_phil to the front, followed by feb_pennsylvania
 ```{r}
 # Create a new dataframe using a pipeline from groundhog_renamed
-
+groundhog_layout <- groundhog_layout %>%
   # columns will move to the front in the order written
-  
+  relocate(punxsutawney_phil, feb_pennsylvania)
 ```
 
 The relocate function can also be used to indicate that we want a column to come before or after another column in our data set.
@@ -459,7 +465,7 @@ groundhog_final <- groundhog_raw %>%
   drop_na() %>%
   
   # Filter the data using a logical test on a character
-  filter(punxsutawney_phil != "No Shadow") %>%
+  filter(punxsutawney_phil == "No Shadow") %>%
   # Filter the data using a logical test on a number
   filter(feb_pennsylvania >32) %>%
   
@@ -479,12 +485,13 @@ We can get our answer by simply running the nrows() function to determine the am
 **To do** Run nrow() on groundhog layout and groundhog_final. Did we get to the correct answer?
 ```{r}
 # groundhog_layout
-
+nrow(groundhog_layout)
 # groundhog_final
+nrow(groundhog_final)
 
 
 
-# hint - you should have 10 for both
+# hint - you should have 2 for both
 ```
 
 
