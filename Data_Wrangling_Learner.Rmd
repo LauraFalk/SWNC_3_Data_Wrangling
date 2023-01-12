@@ -33,6 +33,8 @@ We will cover:
   - d. Convert column data type
   - e. Change column layout
   
+Please note that this training is sequential. Errors must be resolved before continuing to the next code block.
+  
 
 ## 0. Awards and Accolades!
   ![](images/GoldenBison.png){width=250px, align=center} </br>
@@ -104,11 +106,11 @@ There are multiple means of viewing our file.
 
 There are also functions which can be used to quickly assess our imported data.
 
-Head() with all default settings will show the first five rows of data.
+Head() with all default settings will show the first six rows of data.
 
 **To do** Run the code chunk below by clicking on the green arrow.
 ```{r}
-# 5 first rows of groundhog_raw
+# 6 first rows of groundhog_raw
 head(groundhog_raw)
 ```
 
@@ -362,7 +364,7 @@ groundhog_filtered <- groundhog_filtered %>%
   # Filter out the data we don't want using ==. Quotation marks indicate a character string.
   filter(punxsutawney_phil == "No Shadow")
 
-# There should now be 101 observations in the dataframe
+# There should now be 15 observations in the dataframe
 ```
 
 
@@ -379,7 +381,7 @@ groundhog_filtered <- groundhog_filtered %>%
   filter(feb_pennsylvania > 32)
   
 
-# There should now be 12 observations in the dataframe
+# There should now be 2 observations in the dataframe
 ```
 ____________________________________________________________________________
 ### d. Convert and filter year range
@@ -408,7 +410,7 @@ groundhog_filtered <- groundhog_filtered %>%
   # Use & to indicate both statements must be TRUE
   filter(year >= "1900-01-01" & year < "2001-01-01")
 
-# There should now be 10 observations in the data frame
+# There will still be 2 observations in the data frame
 ```
 ____________________________________________________________________________
 
@@ -421,7 +423,7 @@ groundhog_layout <- groundhog_filtered %>%
   #
   select(year, punxsutawney_phil, feb_pennsylvania)
 
-# There should now be 10 observations of only 3 variables(columns)
+# There should now be 2 observations of only 3 variables(columns)
 ```
 
 We can also move the column order
