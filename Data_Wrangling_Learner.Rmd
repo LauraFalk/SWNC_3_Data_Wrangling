@@ -33,6 +33,7 @@ We will cover:
   - d. Convert column data type
   - e. Change column layout
   
+Please note that this training is sequential. Errors must be resolved before continuing to the next code block.  If you get stuck, reference Data_Wrangling_Main, which contains a full answer key.
 
 ## 0. Awards and Accolades!
   ![](images/GoldenBison.png){width=250px, align=center} </br>
@@ -104,11 +105,11 @@ There are multiple means of viewing our file.
 
 There are also functions which can be used to quickly assess our imported data.
 
-Head() with all default settings will show the first five rows of data.
+Head() with all default settings will show the first six rows of data.
 
 **To do** Run the code chunk below by clicking on the green arrow.
 ```{r}
-# 5 first rows of groundhog_raw
+# 6 first rows of groundhog_raw
 head(groundhog_raw)
 ```
 
@@ -354,10 +355,10 @@ Like before, we want to use the filter function to pull out only the "No Shadow"
 ```{r}
 # Data pipeline
 
-  # Filter out the data we don't want using ==. Quotation marks indicate a character string.
+  # Filter out the data we don't want using == (remember two equal signs). Quotation marks indicate a character string.
   
 
-# There should now be 15 observations in the dataframe
+
 ```
 
 
@@ -421,7 +422,7 @@ Often times, we want to manipulate our tables so that the columns are in a logic
 We can also move the column order
 **To do** Begin with *groundhog_layout <-* to replace our current working data set. Using a tidyverse pipeline from groundhog_layout, use relocate to pull the column punxsutawney_phil to the front, followed by feb_pennsylvania
 ```{r}
-# Create a new dataframe using a pipeline from groundhog_renamed
+# Create a new dataframe using a pipeline from groundhog_layout
 
   # columns will move to the front in the order written
   
@@ -430,7 +431,7 @@ We can also move the column order
 The relocate function can also be used to indicate that we want a column to come before or after another column in our data set.
 **To do** Run the below code chunk to move punxsutawney_phil after year.
 ```{r}
-# Create a new dataframe using a pipeline from groundhog_renamed
+# Create a new dataframe using a pipeline from groundhog_layout
 groundhog_layout <- groundhog_layout %>% 
   # columns will move to the front in the order written
   relocate(punxsutawney_phil, .after =year)
@@ -484,12 +485,12 @@ We can get our answer by simply running the nrows() function to determine the am
 
 
 
-# hint - you should have 10 for both
+# hint - you should have 2 for both
 ```
 
 
 As a sneak peak for the upcoming training sessions, here is a visualization of the data frame we pulled from our original data! 
-**To do** run the following code chunk to see the graph!
+**To do** run the following code chunk to see a graph of the data you pulled!
 ```{r}
 # Raw Data pipeline
 groundhog_final %>%
@@ -499,6 +500,18 @@ groundhog_final %>%
   coord_flip()
 ```
 
-
+Here is a graph of the original dataset!
+```{r, warnings = false}
+# Pipeline from raw data
+groundhog_raw %>%
+  # Cleanup 
+  na_if("") %>%
+  drop_na() %>%
+  transform(Year = ISOdate(Year, 1, 1)) %>%
+  # Create Plot
+  ggplot(aes(x = Year, y = February.Average.Temperature..Pennsylvania., fill = Punxsutawney.Phil)) + 
+  geom_col() + 
+  theme(axis.text.x = element_text(angle = 270, vjust = 0.5, hjust=1))
+```
 
 

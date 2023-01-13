@@ -404,7 +404,7 @@ groundhog_filtered <- groundhog_filtered %>%
   # Use & to indicate both statements must be TRUE
   filter(year >= "1900-01-01" & year < "2001-01-01")
 
-# There should still be observations in the data frame
+# There should still be 2 observations in the data frame
 ```
 ____________________________________________________________________________
 
@@ -496,7 +496,19 @@ groundhog_final %>%
   ggplot(aes(x = year, y = feb_pennsylvania, fill = punxsutawney_phil)) + 
   geom_col()
 ```
-
+Here is a graph of the original dataset!
+```{r, warnings = FALSE}
+# Pipeline from raw data
+groundhog_raw %>%
+  # Cleanup 
+  na_if("") %>%
+  drop_na() %>%
+  transform(Year = ISOdate(Year, 1, 1)) %>%
+  # Create Plot
+  ggplot(aes(x = Year, y = February.Average.Temperature..Pennsylvania., fill = Punxsutawney.Phil)) + 
+  geom_col() + 
+  theme(axis.text.x = element_text(angle = 270, vjust = 0.5, hjust=1))
+```
 
 
 
