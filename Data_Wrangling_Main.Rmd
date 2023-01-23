@@ -483,7 +483,7 @@ nrow(groundhog_layout)
 nrow(groundhog_final)
 
 
-# hint - you should have 10 for both
+# hint - you should have 2 for both
 ```
 
 
