@@ -14,6 +14,7 @@ library(tidyverse)
 
 # This is auto-populated in RMD creation and used for formatting purposes.
 opts_chunk$set(echo = TRUE)
+example code 
 ```
 # R Data wrangling {.tabset}
 
