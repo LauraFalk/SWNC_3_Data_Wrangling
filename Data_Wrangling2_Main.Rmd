@@ -1,0 +1,191 @@
+---
+title: "Data Wrangling Main"
+author: "Sam Olivares-Mejia"
+date: '2023-01-26'
+output: html_document
+---
+```{r setup, include=FALSE}
+# Call the required libraries
+library(knitr)
+library(tidyverse)
+library(janitor)
+
+# This is auto-populated in RMD creation and used for formatting purposes.
+opts_chunk$set(echo = TRUE)
+```
+
+# R Data wrangling #2 {.tabset}
+This R reaching session will be a continuation of data wrangling tasks which commonly occur in I+M activities. 
+
+We will cover: 
+0. Awards and Accolades! 
+1. GitHub Reminders - Don't forget to push your progress onto Github at the end of the session!
+2. Mutating our Groundhog Data
+3. Importing data from NPS Data Store
+4. Today's Question!
+5. Wrangling NPS Data 
+  a. More mutations!! 
+  b. Joining data frames together 
+  c. Finding distinct values 
+  d. Grouping data together 
+  e. Pivoting data 
+
+## 0. Awards and Accolades ! 
+  ![](images/GoldenGroundhog.jpg){width= 250, align=center} </br> 
+ Congratulations to Carolyn for successfully pushing her edits from our last data wrangling session to GitHub, and to Arista, Jessica, Kate, and Rachel for successfully forking their repositories! You are all recipients of our Golden Groundhog award! 
+
+## 1. Github Reminders 
+
+Last session we forgot to remind you to push your edits up to GitHub. Don't worry though- we are working off the same repository this time, so that we can continue to practice the GitHub workflow! 
+
+Some of you worked off branches of the repository, while some of you worked off forks. What is the difference? 
+
+A branch allows you to add edits without affecting the main branch, but is still part of the original repository, allowing your commits to be pushed and accessed by collaborators within that repository. 
+
+A fork is a clone of the entire repository, working independently from the original repository, and without the ability to push and pull commits to collaborators on the original repository. 
+
+
+For more review- refer to the 'Github_Basics_Review.html' in this repository, or check out our [SWNC_2_Learning_Github Repository](https://github.com/sam-olivares-mejia/SWNC_2_Learning_Github) for even more detail! 
+
+
+### For those who completed the last session in a branch: 
+
+  1. Stage, commit, and push your edits from the last session to your branch! 
+  
+  ![](images/GithubWorkflow.png) {width=350px, align=center} </br>
+  
+  2. Then, pull the new edits we made off the main branch, and copy the Data_Wrangling2_Learner.Rmd from the main branch into your individual branch 
+
+### For those who completed the last session in a fork, or did not complete the last session: 
+
+  1. Send Laura your gitHub username so that she can give you editing access to the repo
+  2. Go to the location of the repository at [https://github.com/palacila/SWNC_3_Data_Wrangling](https://github.com/palacila/SWNC_3_Data_Wrangling). 
+
+  3. Click on the **main dropdown** in the upper left, and begin typing your name separated by underscores. Once complete, click on **'Create branch:*your name* from main'**. This will create your branch! 
+
+  ![](images/CreateBranch.png){width=350px, align=center} </br>
+  
+  4. Clone the Repo
+Click on **code** in the upper right, and copy the HTTPS url provided. 
+
+  ![](images/CloneRepo.png){width=250px, align=center} </br>
+
+  5. Open R Studio. Go to **File>NewProject>VersionControl>Git** . Paste the repository URL. Information and download location should auto-populate. Click **Create Project**.
+
+  6. Switch to your branch in R studio. 
+
+  ![](images/SwitchBranch.png){width=500px} </br>
+
+## 2. Groundhog Data Review
+
+Last session, we worked on cleaning up our groundhog data to find out how many times Punxatawney Phil correctly predicted an early spring in Pennsylvania. Let's review some of the skills we learned by importing our data again using the read.csv() function, and cleaning it up using the tidyverse/janitor functions. 
+
+Remember we will have to load our csv, tidyverse, and janitor packages in order to use functions outside the base library!
+**To do** run the code below to load the packages we need into our library 
+``` {r}
+#if you have not installed these libraries yet run the following three lines of code in your console: 
+# install.packages("csv")
+# install.packages("tidyverse")
+# install.packages("janitor")
+
+#load libraries 
+library(csv)
+library(tidyverse)
+library(janitor)
+```
+
+**To do** run the code below to import and clean up the Grounhog Dataset, and write in comments to tell us what each part of the code does
+``` {r}
+# Import the dataset 
+groundhog_raw <- read.csv("data/Groundhog_Data.csv")
+#clean up the groundhog dataset
+groundhog_clean <- groundhog_raw %>%
+  # Batch rename using find and replace (gsub)
+  rename_with(function(x){gsub("February.Average.Temperature..","Feb_",x)}) %>%
+  rename_with(function(x){gsub("March.Average.Temperature..","Mar_",x)}) %>%
+  # Janitor to clean names
+  clean_names() %>%
+  # Convert missing character string to NA
+  na_if("") %>%
+  # remove all NAs from dataframe
+  drop_na() %>%
+  # Transform a column to a different data type and perform a logical test
+  transform(year = ISOdate(year, 1, 1)) %>%
+  filter(year >= "1900-01-01" & year < "2001-01-01")
+
+```
+
+**To do** Take a look at the files in our environment (top right corner). Groundhog_raw should have 132 observations, while groundhog clean should only have 101. Click the blue arrow to the left of the title to view a preview of the data and double check the column names have been cleaned up 
+
+Let's focus only on our Pennsylvania data again. 
+
+**To do** Begin with *groundhog_penn<-* and use a tidyverse pipeline from groundhog_clean along with the select() function to select only the columns related to Pennsylvania, in addition to the Year and Punxsutawntey_Phil fields.
+```{r}
+groundhog_penn<-groundhog_clean %>%
+  select(year, punxsutawney_phil, feb_pennsylvania, mar_pennsylvania)
+```
+
+### Mutate() Function
+
+Let's introduce a new function! 
+
+The mutate() function lets us adds new variables to a data set while preserving existing ones. You can create and populate new fields by assigning the field name to a value.
+
+The mutate function uses the following format when creating new variables: 
+*data<- mutate(new_variable = value)*
+
+Copy & Paste `?mutate()` into your console if you want to learn more about the function from the documentation files. 
+
+**To do** Run the code below to create an empty column called 'degree_units' and populate it with 'Fahrenheit' 
+```{r}
+groundhog_mutate<-groundhog_penn %>%
+  mutate(degree_units='Farenheit')
+```
+
+You can also use the mutate() function to create a new variable from modifying pre-existing variables via an expression.
+
+Let's try to figure out what years the average temperature went up more than 10 degrees farenheit from February to March for Pennsylvania. this is another way we could have determined an "early spring". 
+
+**To do** Begin with *groundhog_mutate<-* and add a column to groundhog_mutate called 'temp_change' that is equal to the difference between 'mar_pennsylvania' and 'feb_pennsylvania'
+
+```{r}
+groundhog_mutate<-groundhog_mutate %>%
+  mutate(temp_change=mar_pennsylvania-feb_pennsylvania)
+```
+
+We can add a new column telling us if the temperature increased more than 10 degrees farenheit by using the mutate() function with an ifelse() statement from base R.
+
+The ifelse() function uses an expression to chose one of two options. If the expression is true, it executes the first option, and if the expression is false, it executes the second option.
+
+The ifelse() function uses the following format: 
+*ifelse(expression, execution if expression is true, execution if expression is false)*
+
+**To do** run the code below to create a new column called 'early_spring' and populate it with a 'yes' if the value in the 'temp_change' field is greater than 10, and a 'no' if the value is less than 10. 
+```{r}
+groundhog_mutate<-groundhog_mutate %>%
+  mutate(early_spring=ifelse(temp_change>10, 'yes', 'no'))
+```
+
+Finally, let's filter the data to give us only the observations where punxsutawney_phil='No Shadow' and early_spring='yes'
+
+**To do** begin with *groundhog_final<-* and use the filter() function fo filter data that has 'No Shadow' in the punxsutawney_phil field and 'yes' in the early_spring field. 
+```{r}
+groundhog_final<-groundhog_mutate%>%
+  filter(punxsutawney_phil=='No Shadow' & early_spring=='yes')
+```
+
+## 3. Importing Data from NPS DataStore
+
+```{r}
+# install.packages("devtools")
+
+devtools::install_github("nationalparkservice/NPSutils")
+```
+
+
+## 4. Today's Question!
+
+## 5. Wrangling NPS Data
+
+### 
+
