@@ -100,7 +100,7 @@ library(tidyverse)
 library(janitor)
 ```
 
-**To do** run the code below to import and clean up the Grounhog Dataset, and write in comments to tell us what each part of the code does
+**To do** run the code below to import and clean up the Groundhog Dataset
 ``` {r}
 # Import the dataset 
 groundhog_raw <- read.csv("data/Groundhog_Data.csv")
@@ -120,8 +120,6 @@ groundhog_clean <- groundhog_raw %>%
   filter(year >= "1900-01-01" & year < "2001-01-01")
 
 ```
-
-**To do** Take a look at the files in our environment (top right corner). Groundhog_raw should have 132 observations, while groundhog clean should only have 101. Click the blue arrow to the left of the title to view a preview of the data and double check the column names have been cleaned up 
 
 Let's focus only on our Pennsylvania data again. 
 
@@ -308,35 +306,6 @@ unique(BICA_uplands$PlotNumber)
 #hint: we used colnames(), summary(), head(), and unique() to learn more about our groundhog data
 
 ```
-### A quick side note on data set structure
-
-Our target_species data set is in what we call 'wide' format. This means that values *do not* repeat in the first column. On the other hand, out BICA_uplands data set is in a 'long' format, meaning it contains values that *do* repeat in the first column. 
-
-![](images/WideVsLong.png){width=500px} </br>
-
-
-Each format serves different purposes. Typically, data should always be long during processing, as it makes the data easy to store, and allows easy transformations to other types. Wide data can be useful when visualizing the data or making quick comparisons. 
-
-To switch between the two format types, we can use the pivot_longer() and pivot_wider() functions. 
-
-Take the first 6 rows of the target_species data frame. We can turn this into long format by using pivot_longer(), which requires the data, column names to pivot into longer format as variables, and new column name. 
-
-**To do** run the code below to turn target_species into long format. 
-```{r}
-#pivot the target_species df into long format using the Targeted_year columns
-longer_target_species <- target_species %>%
-  head() %>% 
-  pivot_longer(c(Targeted_2011,Targeted_2012, Targeted_2013, Targeted_2014, Targeted_2015, Targeted_2016, Targeted_2017, Targeted_2018, Targeted_2019, Targeted_2020, Targeted_2021 ), "year")
-```
-
-To turn the data back into wide format, use pivot_wider() by assigning names_from as the column to get the name of the ouput column, and which column to get the cell values from. 
-
-```{r}
-#pivot the longer_target_species df back to wider format by assigning the column to get the names of the new fields from, and column to get the values from. 
-wider_target_species<- longer_target_species %>%
-  pivot_wider(names_from=year, values_from=value)
-```
-
 
 ### b. Get rid of unneeded variables 
 ```{r}
