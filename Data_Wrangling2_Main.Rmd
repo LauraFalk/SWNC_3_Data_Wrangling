@@ -271,13 +271,14 @@ You may notice that BICA_uplands should have 48688 observations of 14 variables,
 
 **How many plots contained prickly pear in 2018?**
 
+
+
 To answer, let's break down the question into smaller steps. 
 
 a. Explore our data 
-b. Get rid of unneeded variables 
-c. Join data frames together 
-d. Group by year/species
-e. Count # of plots 
+b. Join data frames together 
+c. Group by year/species
+d. Count # of plots 
 
 ## 5. Wrangling NPS Data
 
@@ -307,12 +308,38 @@ unique(BICA_uplands$PlotNumber)
 
 ```
 
-### b. Get rid of unneeded variables 
+It looks like in order to solve our question (How many plots contained prickly pear in 2018?) we are going to need to combine our two data sets together to get the common names for our species into the BICA_uplands data frame. 
+
+
+### b. Join data frames together 
+
+Merging data sets together requires a common column between the two, otherwise known as a 'key' which serves as the link between the two data sets. 
+
+We will be using mutate-join functions in order to accomplish this task. 
+
+There are 4 types of joins that you can use; inner, outer(full), left, and right joins. 
+
+The diagram below shows the relationships between the four. 
+
+![](images/joins.png){width=500px} </br>
+
+  - inner_join: only keeps rows with matching keys in both x AND y 
+  - left_join: keeps all rows in x, adding matching columns from y 
+  - right_join: keeps all rows in y, adding matching columns from x
+  - full_join: includes all rows in x OR y
+  
+In addition to specifying what data sets to join, the join functions also require the name of the column to use as the key. Assign this argument using *by=c(x column name = y column name)*.
+
+For example, if we wanted to join BICA_uplands with targeted_species, keeping only rows with species names found in the targeted_species dataset, we can use right_join()
+
+**To do** run the code below to join BICA_uplands with targeted_species, keeping only rows that have targeted_species in the 'species' field
 ```{r}
+
+# create new variable BICA_target by using right join with BICA_uplands as x (by.x='Species'), targeted_species as y (by.y='Scientific_Name')
+BICA_target<-right_join(BICA_uplands, target_species, by=c('Species'= 'Scientific_Name'))
 
 ```
 
-### c. Join data frames together 
 
 ```{r}
 
@@ -321,9 +348,9 @@ unique(BICA_uplands$PlotNumber)
 
 ```
 
-### d. Group by year/species
+### c. Group by year/species
 
-### e. Count number of plots 
+### d. Count number of plots 
 
 ## 6. Extension 
 
