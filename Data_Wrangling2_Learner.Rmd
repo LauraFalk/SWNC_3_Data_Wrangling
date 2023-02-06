@@ -126,8 +126,9 @@ Let's focus only on our Pennsylvania data again.
 
 **To do** Begin with *groundhog_penn<-* and use a tidyverse pipeline from groundhog_clean along with the select() function to select only the columns related to Pennsylvania, in addition to the Year and Punxsutawntey_Phil fields.
 ```{r}
+#create new opject groundhog_penn from groundhog_clean
 groundhog_penn<-groundhog_clean %>%
-  select(year, punxsutawney_phil, feb_pennsylvania, mar_pennsylvania)
+ #use select function
 ```
 
 ### Mutate() Function
@@ -143,6 +144,7 @@ Copy & Paste `?mutate()` into your console if you want to learn more about the f
 
 **To do** Run the code below to create an empty column called 'degree_units' and populate it with 'Fahrenheit' 
 ```{r}
+#mutate data set to add column 'degree_units'
 groundhog_mutate<-groundhog_penn %>%
   mutate(degree_units='Farenheit')
 ```
@@ -154,8 +156,11 @@ Let's try to figure out what years the average temperature went up more than 10 
 **To do** Begin with *groundhog_mutate<-* and add a column to groundhog_mutate called 'temp_change' that is equal to the difference between 'mar_pennsylvania' and 'feb_pennsylvania'
 
 ```{r}
+#create object groundhog_mutate from groundhog_mutate
 groundhog_mutate<-groundhog_mutate %>%
-  mutate(temp_change=mar_pennsylvania-feb_pennsylvania)
+  #mutate to add new column 'temp_change' which is difference 
+  #between mar_pennsylvania and feb_pennsylvania
+
 ```
 
 We can add a new column telling us if the temperature increased more than 10 degrees farenheit by using the mutate() function with an ifelse() statement from base R.
@@ -167,7 +172,9 @@ The ifelse() function uses the following format:
 
 **To do** run the code below to create a new column called 'early_spring' and populate it with a 'yes' if the value in the 'temp_change' field is greater than 10, and a 'no' if the value is less than 10. 
 ```{r}
+#create object groundhog_mutate from groundhog_mutate
 groundhog_mutate<-groundhog_mutate %>%
+  #mutate to add new column early_spring using ifelse statement
   mutate(early_spring=ifelse(temp_change>10, 'yes', 'no'))
 ```
 
@@ -175,8 +182,11 @@ Finally, let's filter the data to give us only the observations where punxsutawn
 
 **To do** begin with *groundhog_final<-* and use the filter() function fo filter data that has 'No Shadow' in the punxsutawney_phil field and 'yes' in the early_spring field. 
 ```{r}
+#create object groundhog_final from groundhog_mutate
 groundhog_final<-groundhog_mutate%>%
-  filter(punxsutawney_phil=='No Shadow' & early_spring=='yes')
+  #filter to keep data with 'No Shadow' in punxsutawney_phil field 
+  #and 'yes' in early_spring field.
+  
 # hint: you should end up with 4 observations 
 ```
 
@@ -206,7 +216,6 @@ library(devtools)
 
 
 ______________________________________________________________________
-
 
 
 **Time for a break! While we wait for everyone's packages to finish installing, take 10 mins to stretch, get a snack, and reset for the next section.**
@@ -240,6 +249,7 @@ The Arguments section tells us that the function takes in a 'reference_id' (in t
 
 **To do** Write code in the code chunk below to import the uplands data into your directory. 
 ```{r}
+#import data into your directory 
 get_data_package(2215186) 
 ```
 **To do** In the files tab, navigate through your file directory, and confirm that your data loaded correctly into the 'data' folder. 
@@ -261,7 +271,7 @@ We will be using the read_xlsx() function to read in our data. We will have to s
 #read in uplands data
 BICA_uplands<- read_xlsx(path='data/2215186/NPS_BICA_UplandVegMonitoringData_and_Documentation_2011through2021.xlsx', sheet='BICA Data 2011 through 2021')
 #read in target species data 
-target_species<- read_xlsx(path='data/2215186/NPS_BICA_UplandVegMonitoringData_and_Documentation_2011through2021.xlsx', sheet='Target Species List')
+target_species<- 
 ```
 
 **To do** View the data frames you just created by clicking on their names in the data section of the environment tab (upper right window). 
@@ -290,21 +300,16 @@ g. Put it all together!
 ```{r}
 
 #generate variable names
-colnames(BICA_uplands)
-colnames(target_species)
+
 
 #summary
-summary(BICA_uplands)
-summary(target_species)
+
 
 #generate first 6 rows of the data set 
 
-head(BICA_uplands)
-head(target_species)
 
 #find unique species and plot values in BICA_uplands
-unique(BICA_uplands$Species)
-unique(BICA_uplands$PlotNumber)
+
 
 #hint: we used colnames(), summary(), head(), and unique() to learn more about 
 #our groundhog data
@@ -335,11 +340,12 @@ In addition to specifying what data sets to join, the join functions also requir
 
 For example, if we wanted to join BICA_uplands with targeted_species, keeping only rows with species names found in the targeted_species data set, we can use right_join()
 
-**To do** create new object BICA_target by joining BICA_uplands with targeted_species, keeping only rows that have targeted_species in the 'species' field
+**To do** create new object *BICA_target* by joining BICA_uplands with targeted_species, keeping only rows that have targeted_species in the 'species' field
 ```{r}
 #create new variable BICA_target by using right join with BICA_uplands 
 #as x (by.x='Species'), targeted_species as y (by.y='Scientific_Name')
-BICA_target<-right_join(BICA_uplands, target_species, by=c('Species'= 'Scientific_Name'))
+BICA_target<-BICA_uplands %>%
+  
 
 ```
 
@@ -367,16 +373,15 @@ To get rid of these duplicate rows in our new data, we are going to use the dist
 **To do** Use the distinct() function to get rid of duplicate rows in BICA_target
 ```{r}
 #get rid of duplicate rows using distinct()
-BICA_target<- BICA_target %>%
-  distinct()
+BICA_target<- 
 ```
 
 ### e. Filter by year and name
 **To do** Create BICA_answer by using the filter() function on BICA_target to only keep Prickly Pear data from 2018
 ```{r}
 #filter BICA_target by SampleYear and Common_Name
-BICA_answer<- BICA_target %>% 
-  filter(SampleYear==2018 & Common_Name=='Prickly pear')
+BICA_answer<- 
+  
 ```
 
 ### f. Answer our question 
