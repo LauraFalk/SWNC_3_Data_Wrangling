@@ -126,7 +126,9 @@ Let's focus only on our Pennsylvania data again.
 
 **To do** Begin with *groundhog_penn<-* and use a tidyverse pipeline from groundhog_clean along with the select() function to select only the columns related to Pennsylvania, in addition to the Year and Punxsutawntey_Phil fields.
 ```{r}
+#create new opject groundhog_penn from groundhog_clean
 groundhog_penn<-groundhog_clean %>%
+   #use select function
   select(year, punxsutawney_phil, feb_pennsylvania, mar_pennsylvania)
 ```
 
@@ -143,6 +145,7 @@ Copy & Paste `?mutate()` into your console if you want to learn more about the f
 
 **To do** Run the code below to create an empty column called 'degree_units' and populate it with 'Fahrenheit' 
 ```{r}
+#mutate data set to add column 'degree_units'
 groundhog_mutate<-groundhog_penn %>%
   mutate(degree_units='Farenheit')
 ```
@@ -154,7 +157,10 @@ Let's try to figure out what years the average temperature went up more than 10 
 **To do** Begin with *groundhog_mutate<-* and add a column to groundhog_mutate called 'temp_change' that is equal to the difference between 'mar_pennsylvania' and 'feb_pennsylvania'
 
 ```{r}
+#create object groundhog_mutate from groundhog_mutate
 groundhog_mutate<-groundhog_mutate %>%
+  #mutate to add new column 'temp_change' which is difference 
+  #between mar_pennsylvania and feb_pennsylvania
   mutate(temp_change=mar_pennsylvania-feb_pennsylvania)
 ```
 
@@ -167,7 +173,9 @@ The ifelse() function uses the following format:
 
 **To do** run the code below to create a new column called 'early_spring' and populate it with a 'yes' if the value in the 'temp_change' field is greater than 10, and a 'no' if the value is less than 10. 
 ```{r}
+#create object groundhog_mutate from groundhog_mutate
 groundhog_mutate<-groundhog_mutate %>%
+  #mutate to add new column 'early_spring' using ifelse statement
   mutate(early_spring=ifelse(temp_change>10, 'yes', 'no'))
 ```
 
@@ -175,7 +183,10 @@ Finally, let's filter the data to give us only the observations where punxsutawn
 
 **To do** begin with *groundhog_final<-* and use the filter() function fo filter data that has 'No Shadow' in the punxsutawney_phil field and 'yes' in the early_spring field. 
 ```{r}
+#create object groundhog_final from groundhog_mutate
 groundhog_final<-groundhog_mutate%>%
+  #filter to keep data with 'No Shadow' in punxsutawney_phil field 
+  #and 'yes' in early_spring field.
   filter(punxsutawney_phil=='No Shadow' & early_spring=='yes')
 # hint: you should end up with 4 observations 
 ```
@@ -240,6 +251,7 @@ The Arguments section tells us that the function takes in a 'reference_id' (in t
 
 **To do** Write code in the code chunk below to import the uplands data into your directory. 
 ```{r}
+#import data into your directory 
 get_data_package(2215186) 
 ```
 **To do** In the files tab, navigate through your file directory, and confirm that your data loaded correctly into the 'data' folder. 
@@ -339,7 +351,8 @@ For example, if we wanted to join BICA_uplands with targeted_species, keeping on
 ```{r}
 #create new variable BICA_target by using right join with BICA_uplands 
 #as x (by.x='Species'), targeted_species as y (by.y='Scientific_Name')
-BICA_target<-right_join(BICA_uplands, target_species, by=c('Species'= 'Scientific_Name'))
+BICA_target<-BICA_uplands %>% 
+  right_join(target_species, by=c('Species'= 'Scientific_Name'))
 
 ```
 
