@@ -1,6 +1,6 @@
 ---
 title: "Data Wrangling Learner"
-author: "LEARNER"
+author: "Sam Olivares-Mejia"
 date: '2023-01-26'
 output: html_document
 ---
@@ -129,6 +129,7 @@ Let's focus only on our Pennsylvania data again.
 #create new opject groundhog_penn from groundhog_clean
 groundhog_penn<-groundhog_clean %>%
  #use select function
+  select(year, punxsutawney_phil,feb_pennsylvania, mar_pennsylvania)
 ```
 
 ### Mutate() Function
@@ -160,6 +161,7 @@ Let's try to figure out what years the average temperature went up more than 10 
 groundhog_mutate<-groundhog_mutate %>%
   #mutate to add new column 'temp_change' which is difference 
   #between mar_pennsylvania and feb_pennsylvania
+  mutate(temp_change=mar_pennsylvania-feb_pennsylvania)
 
 ```
 
@@ -186,7 +188,7 @@ Finally, let's filter the data to give us only the observations where punxsutawn
 groundhog_final<-groundhog_mutate%>%
   #filter to keep data with 'No Shadow' in punxsutawney_phil field 
   #and 'yes' in early_spring field.
-  
+  filter(punxsutawney_phil=="No Shadow" & early_spring=='yes')
 # hint: you should end up with 4 observations 
 ```
 
@@ -271,7 +273,7 @@ We will be using the read_xlsx() function to read in our data. We will have to s
 #read in uplands data
 BICA_uplands<- read_xlsx(path='data/2215186/NPS_BICA_UplandVegMonitoringData_and_Documentation_2011through2021.xlsx', sheet='BICA Data 2011 through 2021')
 #read in target species data 
-target_species<- 
+target_species<- read_xlsx(path='data/2215186/NPS_BICA_UplandVegMonitoringData_and_Documentation_2011through2021.xlsx', sheet='Target Species List')
 ```
 
 **To do** View the data frames you just created by clicking on their names in the data section of the environment tab (upper right window). 
@@ -300,16 +302,18 @@ g. Put it all together!
 ```{r}
 
 #generate variable names
-
+colnames(BICA_uplands)
+colnames(target_species)
 
 #summary
-
+summary(BICA_uplands)
 
 #generate first 6 rows of the data set 
-
+head(BICA_uplands, n=4)
 
 #find unique species and plot values in BICA_uplands
-
+unique(BICA_uplands$Species)
+unique(BICA_uplands$PlotNumber)
 
 #hint: we used colnames(), summary(), head(), and unique() to learn more about 
 #our groundhog data
@@ -345,6 +349,7 @@ For example, if we wanted to join BICA_uplands with targeted_species, keeping on
 #create new variable BICA_target by using right join with BICA_uplands 
 #as x (by.x='Species'), targeted_species as y (by.y='Scientific_Name')
 BICA_target<-BICA_uplands %>%
+  right_join(target_species, by=c('Species'='Scientific_Name'))
   
 
 ```
@@ -373,14 +378,16 @@ To get rid of these duplicate rows in our new data, we are going to use the dist
 **To do** Use the distinct() function to get rid of duplicate rows in BICA_target
 ```{r}
 #get rid of duplicate rows using distinct()
-BICA_target<- 
+BICA_target<- BICA_target %>% 
+  distinct()
 ```
 
 ### e. Filter by year and name
 **To do** Create BICA_answer by using the filter() function on BICA_target to only keep Prickly Pear data from 2018
 ```{r}
 #filter BICA_target by SampleYear and Common_Name
-BICA_answer<- 
+BICA_answer<- BICA_target %>%
+  filter(SampleYear==2018 & Common_Name=='Prickly pear')
   
 ```
 
