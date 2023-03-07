@@ -1,0 +1,107 @@
+---
+title: "Data_Wrangling_3_Main"
+author: "Laura Falk"
+date: "2023-03-07"
+output: html_document
+---
+Call the required libraries from CRAN (R studio default repository)
+
+If you are missing a package, run *install.packages()* in the console. Be sure to include quotes around the package name. 
+Ex: install.packages("devtools")
+
+```{r setup, include=FALSE}
+# Call the required libraries
+library(devtools)
+library(here)
+library(knitr)
+library(janitor)
+library(tidyverse)
+library(readxl)
+
+# This is auto-populated in RMD creation and used for formatting purposes.
+opts_chunk$set(echo = TRUE)
+```
+
+Install Required libraries from github.
+
+Here is a built-in check to see if NPSutils is already installed on your machine. If it is not installed, it will automatically run the github installer.
+
+Note: This may prompt for updates of other packages. Enter the number 1 to update everything at once. If a restart option is required, click "No" to continue installation then close/reopen the project.
+```{r}
+# Checks for NPSutils
+if(!require(NPSutils)){
+  # Hard codes a download method option since it can be buggy.
+  options(download.file.method = "wininet")
+  # Use devtools to nstall the NPS package from the NPS github account.
+  devtools::install_github("nationalparkservice/NPSutils")
+  # reset the download method to default
+  options(download.file.method = "libcurl")
+}
+
+#Call the github library
+library(NPSutils)
+```
+
+Welcome to Data Wrangling 3. Today we'll be exploring some data from NPSdata store. Above, we installed NPSUtils, the package created by NPS to reach the data within the data store website.
+
+In the last session, we learned that there is a function called get_data_package() from NPSutils. It has been updated to getDataPackages().
+
+Let's pull in the first dataset
+```{r}
+# When the code is run, Rstudio will display a file location below. 
+NPSutils::getDataPackages(2229286)
+```
+
+Lets pull the data into R
+**To do** Run the code below to pull in the first file
+```{r}
+# Create a new dataframe called CRMO_Raw. Use read_xlsx() to pull in the data we downloaded
+CRMO_Raw <- read_xlsx("data/2229286/Hutten 2016_CRMO_lichen_moss_liverwort_.xlsx")
+```
+
+**To do**
+Click on the data name in the RStudio Environment (top right) to explore the data. We can see that it is lichen moss and liverwort data from Craters of the Moon - a National Monument and Preserve in Idaho.
+
+Lets explore other possible comparable datasets by looking at [!https://irma.nps.gov/DataStore/](https://irma.nps.gov/DataStore/) in our browser.
+
+I will use the quick search with the search term "lichen" and and the reference type group "datasets" so see the results. 
+
+There is a tabular dataset that may be relatable, called John Muir National Historic Site 2014 Lichen Survey Data (Code: 2233056). Lets pull it in using the same functions.
+
+**To Do** Use getDataPackages() to download the JOMU dataset.
+```{r}
+getDataPackages(2233056)
+```
+
+Lets pull the excel file into R
+**To do** use read_xls() *note the file type! xls not xlsx* to import the .xls file.
+```{r}
+# Create a new dataframe called CRMO_Raw. Use read_xlsx() to pull in the data we downloaded
+JOMU_Raw <- read_xls("data/2233056/SFAN_JOMU_LichenIndicatorSurvey2014.xls")
+```
+
+We can see it has the red text "new names:" populate down below when this is run. Why? Lets look at the dataset by clicking on the name in the environment.
+
+There is obviously an issue with the upload, the headers didn't auto-detect and the rows a the top aren't necessary. We can alter the upload to pick what we want to import. Lets try it again but with more parameters.
+
+**To do** Use the help function to determine what we can use
+```{r}
+?read_xls
+```
+
+It looks like we should be using skip = # and col_names = TRUE. Lets try it out
+**To do** Use the new arguments in the function to re-import the dataset
+```{r}
+# Skip a row an include headers in a JOMU import
+JOMU_Raw <- read_xls("data/2233056/SFAN_JOMU_LichenIndicatorSurvey2014.xls",skip = 1, col_names = TRUE)
+```
+
+Notice the number of rows has decreased by 1 because we skipped the first row in import. Lets explore the dataset by clicking on the name in the Environment. 
+
+Now that we have our two datasets, we can explore a question. This week, the first question I'd lichen to answer is:
+**Were there any lichen species that were found at both JOMU and CRMO during these separate surveys?**
+
+How will we answer this?
+1. Ensure we have a comparable dataset (we'll use genus and species)
+2. Join the datasets based on their shared data column (lichen genus & species)
+
