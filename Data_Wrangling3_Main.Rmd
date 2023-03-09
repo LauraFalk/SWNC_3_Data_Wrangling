@@ -4,9 +4,17 @@ author: "Laura Falk"
 date: "2023-03-07"
 output: html_document
 ---
-Call the required libraries from CRAN (R studio default repository)
 
-If you are missing a package, run *install.packages()* in the console. Be sure to include quotes around the package name. 
+# Data Wrangling 3 {.tabset}
+
+
+## Import Libraries  
+Today we're going to revisit libraries before we begin. 
+
+### CRAN Libraries
+The first is CRAN libraries. CRAN is the R studio default repository. Most code will have a list of *all* libraries as the first code chunk. RStudio will automatically check for all CRAN libraries. If you do not have one which is listed, a yellow bar prompting install will appear at the top and the code chunk will throw an error message until all are installed correctly. 
+
+Remember, even without the yellow bar prompting install, you can run *install.packages(<"package name">)* in the console. Be sure to include quotes around the package name. 
 Ex: install.packages("devtools")
 
 ```{r setup, include=FALSE}
@@ -22,27 +30,37 @@ library(readxl)
 opts_chunk$set(echo = TRUE)
 ```
 
-Install Required libraries from github.
+### GitHub Libraries
 
-Here is a built-in check to see if NPSutils is already installed on your machine. If it is not installed, it will automatically run the github installer.
+RStudio does not automatically check for and install GitHub libraries (Unlike CRAN packages, you won't get the yellow notification bar warning you to install them)
 
-Note: This may prompt for updates of other packages. Enter the number 1 to update everything at once. If a restart option is required, click "No" to continue installation then close/reopen the project.
+Below, I have added a built-in check to see if NPSutils is already installed on your machine. If it is not installed, it will automatically run the github installer.
+
+Some coders do not include the GitHub check and will instead just list all packages (CRAN and GitHub) together. Again, the code chunk will throw and error and inform you which package is missing. If you need to install a package from github, use:
+**library(devtools) devtools::install_github(<"github package author/package name">)** 
+
+install_github() can be run in the console like the install.packages() that we've become familiar with. 
+
 ```{r}
 # Checks for NPSutils
 if(!require(NPSutils)){
   # Hard codes a download method option since it can be buggy.
   options(download.file.method = "wininet")
-  # Use devtools to nstall the NPS package from the NPS github account.
+  # Use devtools to install the NPS package from the NPS github account. This will only work if the devtools package is installed.
   devtools::install_github("nationalparkservice/NPSutils")
   # reset the download method to default
   options(download.file.method = "libcurl")
 }
+#Note: This may prompt for updates of other packages. Enter the number 1 to update everything at once. If a restart option is required, click "No" to continue installation then close/reopen the project.
 
 #Call the github library
 library(NPSutils)
 ```
 
-Welcome to Data Wrangling 3. Today we'll be exploring some data from NPSdata store. Above, we installed NPSUtils, the package created by NPS to reach the data within the data store website.
+Today we'll be exploring some data from NPSdata store. Above, we hopefully installed NPSUtils, the package created by NPS to reach the data within the data store website.
+
+If you were not able to install NPSUtils, you can still do this training. A backup data set has already been downloaded into this project. Use the" "NPSUtils Workaround:" comments in the next 4 code chunks.
+
 
 In the last session, we learned that there is a function called get_data_package() from NPSutils. It has been updated to getDataPackages().
 
@@ -50,6 +68,8 @@ Let's pull in the first dataset
 ```{r}
 # When the code is run, Rstudio will display a file location below. 
 NPSutils::getDataPackages(2229286)
+
+# NPSUtils Workaround: skip this step
 ```
 
 Lets pull the data into R
@@ -57,6 +77,9 @@ Lets pull the data into R
 ```{r}
 # Create a new dataframe called CRMO_Raw. Use read_xlsx() to pull in the data we downloaded
 CRMO_Raw <- read_xlsx("data/2229286/Hutten 2016_CRMO_lichen_moss_liverwort_.xlsx")
+
+# NPSUtils Workaround: Replace above code with: 
+# CRMO_Raw <- read_xlsx("data/DataStore_Backup/Hutten 2016_CRMO_lichen_moss_liverwort_.xlsx")
 ```
 
 **To do**
@@ -71,6 +94,8 @@ There is a tabular dataset that may be relatable, called John Muir National Hist
 **To Do** Use getDataPackages() to download the JOMU dataset.
 ```{r}
 getDataPackages(2233056)
+
+# NPSUtils Workaround: skip this step
 ```
 
 Lets pull the excel file into R
@@ -78,16 +103,16 @@ Lets pull the excel file into R
 ```{r}
 # Create a new dataframe called CRMO_Raw. Use read_xlsx() to pull in the data we downloaded
 JOMU_Raw <- read_xls("data/2233056/SFAN_JOMU_LichenIndicatorSurvey2014.xls")
+
+# NPSUtils Workaround: Replace above code with: 
+# JOMU_Raw <- read_xls("data/DataStore_Backup/SFAN_JOMU_LichenIndicatorSurvey2014.xls")
 ```
 
 We can see it has the red text "new names:" populate down below when this is run. Why? Lets look at the dataset by clicking on the name in the environment.
 
 There is obviously an issue with the upload, the headers didn't auto-detect and the rows a the top aren't necessary. We can alter the upload to pick what we want to import. Lets try it again but with more parameters.
 
-**To do** Use the help function to determine what we can use
-```{r}
-?read_xls
-```
+**To do** Use the help function to determine what we can use by typing ?read_xsls in the console.
 
 It looks like we should be using skip = # and col_names = TRUE. Lets try it out
 **To do** Use the new arguments in the function to re-import the dataset
@@ -98,10 +123,97 @@ JOMU_Raw <- read_xls("data/2233056/SFAN_JOMU_LichenIndicatorSurvey2014.xls",skip
 
 Notice the number of rows has decreased by 1 because we skipped the first row in import. Lets explore the dataset by clicking on the name in the Environment. 
 
+## The question
+
 Now that we have our two datasets, we can explore a question. This week, the first question I'd lichen to answer is:
+
 **Were there any lichen species that were found at both JOMU and CRMO during these separate surveys?**
 
 How will we answer this?
 1. Ensure we have a comparable dataset (we'll use genus and species)
 2. Join the datasets based on their shared data column (lichen genus & species)
+
+## Wrangle CRMO Dataset
+
+Lets look at the dataset again by clicking on the name of the dataset in the environment. 
+
+Notice that we have Scientific Name (which includes Species, Genus and sometimes extra information in parenthesis) as well as a column for just species and genus. There is also some null data. Lets handle the nulls first.
+
+### Remove NAs
+*To Do* Create a new dataframe called CRMO_Edit. Use drop_na() in a pipeline to remove nulls from the dataset.
+```{r}
+# New Dataframe <- Old dataframe %>% functions
+CRMO_Edit <- CRMO_Raw %>%
+  drop_na()
+```
+
+Oh no! this deleted ALL the data. That's not what we wanted. 
+**To do** explore the CRMO dataset to determine what went wrong.
+
+Notice that the last three columns of the dataset are all null. Since drop_na() deletes any row which has a null value, all are dropped. Lets subset our dataset so that we ignore these columns.
+
+**To do** Copy and paste the previous code chunk. Add a filter before drop_na() to ignore the last three data columns
+```{r}
+# New Dataframe <- Old dataframe %>% functions
+CRMO_Edit <- CRMO_Raw %>%
+  select(-FirstOfRank, -FirstOfSubspecies, -FirstOfAuthority_subsp) %>%
+  drop_na()
+```
+
+#### Aside about pipelines
+Remember that the pipeline is not necessary for coding, but is used to make the code concise and legible. 
+
+The object before the pipe (%>%) is automatically used as the object of the function after the pipe.
+
+Without a pipeline, the above chunk could also be written as:
+```{r}
+# This is the same as above, but without the pipeline. A new object is created with each function.
+CRMO_NoPipeExample <- select(CRMO_Raw, select = -c(FirstOfRank, FirstOfSubspecies, FirstOfAuthority_subsp))
+CRMO_NoPipeExample <-drop_na(CRMO_NoPipeExample)
+
+#OR
+
+#This nests the functions, which saves typing time, but is harder for others using your code to understand.
+CRMO_NoPipeExample2 <- drop_na(select(CRMO_Raw, select = -c(FirstOfRank, FirstOfSubspecies, FirstOfAuthority_subsp)))
+```
+
+
+### Rename Columns
+For added clarity when we merge the datasets together, I want to rename my columns.
+
+**To do** Create a new object called CRMO_ForMerge. Use CRMO_Edit with the rename() function to rename the Genus and Species columns to "CRMO_Genus" and "CRMO_Species"
+```{r}
+CRMO_ForMerge <- CRMO_Edit %>%
+  mutate(Genus = FirstOfGenus, Species = FirstOfspecies)
+```
+
+## Wrangle JOMU Dataset
+
+**To do** Explore the dataset by clicking on the JOMU_Raw in the environment.
+
+It looks like all we need to do is separate the species column into Genus and Species_edit.
+
+How can we do this? We google "r separate column with two values single space" and click on the first link. For me it is [!https://tidyr.tidyverse.org/reference/separate.html](https://tidyr.tidyverse.org/reference/separate.html)
+
+Scroll down to the examples and you will find: df %>% separate_wider_delim(x, ".", names = c("A", "B")). This looks like something we can use. 
+
+**To do** Copy and paste the example below. Replace the information to create and Genus and Species_edit column from the JOMU_Raw data. Create a new object called JOMU_Edit
+```{r}
+# df %>% separate_wider_delim(x, ".", names = c("A", "B"))
+JOMU_ForMerge <- JOMU_Raw %>% 
+  separate_wider_delim(Species, " ", names = c("Genus", "Species_edit"))
+```
+
+
+**To do** Click on the dataset to ensure it was parsed correctly.
+
+## Merge the data
+Last week session introduced the idea of different types of joins. Remember this lovely image:
+![](images/joins.png){width=500px} </br>
+So if we have two datasets and would ONLY lichen to know where the overlap of species is, we will use an inner join.  
+
+*To do* Inner Join the two ForMerge datasets on Genus and species columns
+```{r}
+
+```
 
