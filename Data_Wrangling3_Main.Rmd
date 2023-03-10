@@ -5,7 +5,66 @@ date: "2023-03-07"
 output: html_document
 ---
 
-# Data Wrangling 3 {.tabset}
+# R Data wrangling #3 {.tabset}
+This R reaching session will be a continuation of data wrangling tasks which commonly occur in I+M activities. 
+
+We will cover: 
+0. Awards and Accolades!
+1. Github Repo Pull
+2. Libraries
+  a. CRAN
+  b. Github
+3. Importing data from NPS data store
+4. The Question
+5. Data Wrangling - CRMO data
+6. Data Wrangling - JOMU data
+7. Merging data
+
+
+## 0. Awards and Accolades ! 
+![](images/GoldenPricklyPear.png){} </br> 
+  
+ Congratulations to Arista and Rachel for successfully pushing their edits from our last data wrangling session to GitHub! You are both recipients of our Golden Prickly Pear Award! 
+ 
+Please let me know if I missed anyone else for this high honor!
+## 1. GitHub
+
+
+### Further information
+
+We are going to be continuing work in [!https://github.com/LauraFalk/SWNC_3_Data_Wrangling](https://github.com/LauraFalk/SWNC_3_Data_Wrangling), a continuation of previous trainings. For more detailed GitHub instructions (with pictures) you can reference our previous training: Data Wrangling 1 and Data Wrangling 2 in the same repository. For more into Github, see Sam's training: [!https://github.com/sam-olivares-mejia/SWNC_Learning_Github](https://github.com/sam-olivares-mejia/SWNC_Learning_Github)
+
+
+### Let's get the repo on our computers!
+
+We will have four different adventure choices for this training, depending on which other trainings you have come to.
+
+*1. I do not have a Github account* You can still follow along with the training. Rather than branching (making an editable copy of the training that you can send back) you will clone (work on your local machine). We'll go over how to do this. Follow steps in 3 to gain local access to the repo.
+
+*2. I have a Github account but I have not been added to the repo* Current contributors are: aknutson2, aristaregalia, clivensperger, hmthomas, JHubbardNPS, kraymondNPS, LFalkNPS, r-struhs, Sage-Ragland, sam-olivares-mejia, whitena7.
+Please send Laura your github username so that I can add you as a collaborator on this repo. Follow the steps in 3 to gain local access to the repo.
+
+*3. I am on added to the Repo but I don't have a local copy (no folder on my computer) - this is for those who deleted the last training or have not come to any of the data wrangling sessions*
+
+1. Open [!https://github.com/LauraFalk/SWNC_3_Data_Wrangling](https://github.com/LauraFalk/SWNC_3_Data_Wrangling) in your browser.
+1. Open R studio
+2. In the upper right-hand corner, close any open projects by clicking the down arrow and "close projects"
+2. Navigate to file>New project
+3. In the pop-up, click Version control > Git
+4. Paste the repository URL (https://github.com/LauraFalk/SWNC_3_Data_Wrangling). Project directory name will auto-populate. Note the Subdirectory location (this is where the file will download to)
+
+You now all should have a local copy of our code on your computer.
+
+*4. I have a local copy on my computer*
+1. If you have not made a branch
+  a. Navigate to the repo on your browser
+  b. Click the arrow next to "main" and fill in your name in create branch
+  c. Press enter to create
+2. In RStudio, use the branch dropdown in the upper right (may default to "main") to select your branch on your local machine. This is where you will do your work.
+3. Use the Pull (down arrow) to pull down the most recent version of the training. If you have uncommitted changes in a previous training, commit them first, then pull the new training down.
+
+Let Laura know if you have any issues getting the latest version of this training on your local machine. In files (lower right) you should all see Data_Wrangling3_Learner.RMD. This is the file we'll be working in today.
+
 
 
 ## Import Libraries  
@@ -56,7 +115,7 @@ if(!require(NPSutils)){
 #Call the github library
 library(NPSutils)
 ```
-
+## Importing Data
 Today we'll be exploring some data from NPSdata store. Above, we hopefully installed NPSUtils, the package created by NPS to reach the data within the data store website.
 
 If you were not able to install NPSUtils, you can still do this training. A backup data set has already been downloaded into this project. Use the" "NPSUtils Workaround:" comments in the next 4 code chunks.
@@ -127,7 +186,7 @@ Notice the number of rows has decreased by 1 because we skipped the first row in
 
 Now that we have our two datasets, we can explore a question. This week, the first question I'd lichen to answer is:
 
-**Were there any lichen species that were found at both JOMU and CRMO during these separate surveys?**
+**Were there any lichen genus or species that were found at CRMO were also found at JOMU?**
 
 How will we answer this?
 1. Ensure we have a comparable dataset (we'll use genus and species)
@@ -184,7 +243,7 @@ For added clarity when we merge the datasets together, I want to rename my colum
 **To do** Create a new object called CRMO_ForMerge. Use CRMO_Edit with the rename() function to rename the Genus and Species columns to "CRMO_Genus" and "CRMO_Species"
 ```{r}
 CRMO_ForMerge <- CRMO_Edit %>%
-  mutate(Genus = FirstOfGenus, Species = FirstOfspecies)
+  rename(Genus = FirstOfGenus, Species = FirstOfspecies)
 ```
 
 ## Wrangle JOMU Dataset
@@ -210,10 +269,84 @@ JOMU_ForMerge <- JOMU_Raw %>%
 ## Merge the data
 Last week session introduced the idea of different types of joins. Remember this lovely image:
 ![](images/joins.png){width=500px} </br>
-So if we have two datasets and would ONLY lichen to know where the overlap of species is, we will use an inner join.  
+So if we have two datasets and would lichen to know all of CRMO data and matching JOMU data, we'll use a sided join.
 
-*To do* Inner Join the two ForMerge datasets on Genus and species columns
+### Genus AND Species
+I googled what I wanted to do: "tidyverse join on two columns" and get to this web page. [!https://www.statology.org/dplyr-join-on-multiple-columns/](https://www.statology.org/dplyr-join-on-multiple-columns/)
+
+It looks like I can use an example they provided
+left_join(df1, df2, by=c('x1'='x2', 'y1'='y2'))
+
+
+*To do* Create a new dataset called Merged_Data. Inner Join the two ForMerge datasets on Genus and species columns
 ```{r}
+Merged_Data <- left_join(CRMO_ForMerge, JOMU_ForMerge,  by=c('Genus' = 'Genus', 'Species' = 'Species_edit'))
 
+#Note: All data does not match (this is expected) so a warning will show up that rows will be missing
+```
+Notice that this join created MORE records than in the original. Why is this? 
+If we open Merged_Data and sort by scientific name, Physconia enteroxantha is on row 84 and 85. The duplication occurred because there are more than one records in the JOMU dataset, so each JOMU record is merged with the same row in the CRMO one. 
+
+How do we fix this? 
+
+Lets filter the JOMU before we merge so that there are only unique values
+**To do** Create a new dataset called JOMU_ForMerge2. Use select to keep only the columns: Genus, Species and park. Then use distinct() to select only unique values.
+```{r}
+JOMU_ForMerge2 <- JOMU_ForMerge %>%
+  select(Genus, Species_edit,Park) %>%
+  distinct()
+```
+The dataset has decreased from 28 to 40. 
+
+But wait! does the CRMO data also have duplicates? Let's check.
+**To do** Similar to above, select only Genus and Species from the CRMO_ForMerge dataset, then use distinct(). 
+Wrap the entire process in nrow() to output the number of rows in the dataframe.
+```{r}
+nrow(CRMO_ForMerge %>%
+        select(Genus,Species)%>%
+        distinct())
+```
+Since nrow = 127, we can leave all of the other data in the CRMO dataset. Now, we can merge!
+
+
+**To do** Merge the datasets again using JOMU_ForMerge2 instead.
+```{r}
+Merged_Data <- left_join(CRMO_ForMerge, JOMU_ForMerge2,  by=c('Genus' = 'Genus', 'Species' = 'Species_edit'))
+```
+
+Now, we have a Merged_Data dataset which has all of the records for CRMO and the last column, currently called Park, shows where merged data occurs.
+But let's think about the question. We want to see the data which has Genus AND Genus/Species. So lets change the name and contents of the Park column to something more descriptive. 
+
+**To do** In Merged_Data, rename() the Park column to JOMU_Species. Change the data within the column so that JOMU is TRUE and the null values are FALSE
+```{r}
+Merged_Data <- Merged_Data %>%
+  rename(JOMU_Species = Park) %>%
+  mutate(JOMU_Species = if_else(JOMU_Species == "JOMU", "1" , "0"))
+```
+
+Now, won't it be fun(gi) to do the same thing for only Genus?
+**To do** Repeat the steps starting with finding distinct() JOMU records for Genus (using only Genus rather than Genus and Species). Once merged, rename the column to JOMU_Genus and mutate to a TRUE/FALSE column.
+```{r}
+JOMU_ForMerge3 <- JOMU_ForMerge %>%
+  select(Genus,Park) %>%
+  distinct()
+
+Merged_Data <- left_join(Merged_Data, JOMU_ForMerge3,  by=c('Genus' = 'Genus'))
+
+Merged_Data <- Merged_Data %>%
+  rename(JOMU_Genus = Park) %>%
+  mutate(JOMU_Genus = if_else(JOMU_Genus == "JOMU", 1, 0))
+```
+
+```{r}
+Merged_Data %>%
+  mutate(JOMU_Species = as.numeric(JOMU_Species)) %>%
+  replace_na(list(JOMU_Genus = 0, JOMU_Species = 0)) %>%
+  mutate(category = JOMU_Genus+JOMU_Species) %>%
+  filter(category > 0) %>%
+  mutate(category = (ifelse(category>1,"Species","Genus"))) %>%
+  ggplot(aes(x = category, y = fct_rev(Scientific_name))) +
+  geom_point() +
+  scale_y_discrete(guide = guide_axis(check.overlap = TRUE))
 ```
 
