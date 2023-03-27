@@ -21,28 +21,38 @@ We will cover:
 7. Merging data
 
 
-## 0. Awards and Accolades ! 
+## 0. Awards and Accolades! 
 ![](images/GoldenPricklyPear.png){} </br> 
   
  Congratulations to Arista and Rachel for successfully pushing their edits from our last data wrangling session to GitHub! You are both recipients of our Golden Prickly Pear Award! 
- 
+
 Please let me know if I missed anyone else for this high honor!
+ 
+### Survey Results
+The survey results are in! Thank you to everyone who completed the survey, we appreciate your feedback and have integrated as much as we can into our workplan.  We received one question that we wanted to address.
+![](images/survey.png){} </br> 
+ Yes! These are the results that we see. Our anonymous surveys will always be truly anonymous!
+
+
+
+
 ## 1. GitHub
 
-
-### Further information
-
+### More Information
 We are going to be continuing work in [!https://github.com/LauraFalk/SWNC_3_Data_Wrangling](https://github.com/LauraFalk/SWNC_3_Data_Wrangling), a continuation of previous trainings. For more detailed GitHub instructions (with pictures) you can reference our previous training: Data Wrangling 1 and Data Wrangling 2 in the same repository. For more into Github, see Sam's training: [!https://github.com/sam-olivares-mejia/SWNC_Learning_Github](https://github.com/sam-olivares-mejia/SWNC_Learning_Github)
+
+### Note about trainings
+Training steps are sequential within our trainings. Ensure that all steps are completed before moving on to the next step to ensure error-less success!
 
 
 ### Let's get the repo on our computers!
 
 We will have four different adventure choices for this training, depending on which other trainings you have come to.
 
-*1. I do not have a Github account* You can still follow along with the training. Rather than branching (making an editable copy of the training that you can send back) you will clone (work on your local machine). We'll go over how to do this. Follow steps in 3 to gain local access to the repo.
+*1. I do not have a Github account* You can still follow along with the training. Rather than branching (making an editable copy of the training that you can send back) you will clone (work on your local machine). We'll go over how to do this. Complete ONLY step 3 to work locally.
 
 *2. I have a Github account but I have not been added to the repo* Current contributors are: aknutson2, aristaregalia, clivensperger, hmthomas, JHubbardNPS, kraymondNPS, LFalkNPS, r-struhs, Sage-Ragland, sam-olivares-mejia, whitena7.
-Please send Laura your github username so that I can add you as a collaborator on this repo. Follow the steps in 3 to gain local access to the repo.
+Please send Laura your github username so that I can add you as a collaborator on this repo. Continue to step 3.
 
 *3. I am on added to the Repo but I don't have a local copy (no folder on my computer) - this is for those who deleted the last training or have not come to any of the data wrangling sessions*
 
@@ -89,16 +99,27 @@ library(readxl)
 opts_chunk$set(echo = TRUE)
 ```
 
+*Help! I'm stuck in a version error loop!* 
+Some R packages use other packages to function. If there is a mismatch in the version numbers, you may need to remove the package from current use before updating.
+![](images/Warning.png){} </br> 
+
+Notice that this is a versioning error (>= version number is required) and the package could not be uploaded. 
+
+Use **remove.packages("<PackageName>")** to remove it from use. 
+Then use **install.packages("<PackageName>")** to update.
+
 ### GitHub Libraries
 
-RStudio does not automatically check for and install GitHub libraries (Unlike CRAN packages, you won't get the yellow notification bar warning you to install them)
+RStudio does not automatically check for and optionally install GitHub libraries (Unlike CRAN packages, you won't get the yellow notification bar warning you to install them)
 
 Below, I have added a built-in check to see if NPSutils is already installed on your machine. If it is not installed, it will automatically run the github installer.
 
-Some coders do not include the GitHub check and will instead just list all packages (CRAN and GitHub) together. Again, the code chunk will throw and error and inform you which package is missing. If you need to install a package from github, use:
+Note:
+Some coders do not include the GitHub check and will instead just list all packages (CRAN and GitHub) together. If you need to install a package from github, use:
 **library(devtools) devtools::install_github(<"github package author/package name">)** 
 
-install_github() can be run in the console like the install.packages() that we've become familiar with. 
+ 
+**To do** Run the following code chunk. If prompted, enter 1 to update all packages. Restart one time, then click "no" if prompted again.
 
 ```{r}
 # Checks for NPSutils
@@ -110,11 +131,17 @@ if(!require(NPSutils)){
   # reset the download method to default
   options(download.file.method = "libcurl")
 }
-#Note: This may prompt for updates of other packages. Enter the number 1 to update everything at once. If a restart option is required, click "No" to continue installation then close/reopen the project.
 
+#Note: wininet only works on Windows. Apple machines may require a different download file method.
+```
+
+**To do** Call the NPSutils package using library()
+```{r}
 #Call the github library
 library(NPSutils)
 ```
+
+
 ## Importing Data
 Today we'll be exploring some data from NPSdata store. Above, we hopefully installed NPSUtils, the package created by NPS to reach the data within the data store website.
 
@@ -124,8 +151,11 @@ If you were not able to install NPSUtils, you can still do this training. A back
 In the last session, we learned that there is a function called get_data_package() from NPSutils. It has been updated to getDataPackages().
 
 Let's pull in the first dataset
+**To do** 
+1. Connect to the park service network either locally or using a VPN to access IRMA)
+2. Run the following code to load in the data onto our computer.
 ```{r}
-# When the code is run, Rstudio will display a file location below. 
+# When the code is run, Rstudio will display a file location below.
 NPSutils::getDataPackages(2229286)
 
 # NPSUtils Workaround: skip this step
@@ -171,20 +201,23 @@ We can see it has the red text "new names:" populate down below when this is run
 
 There is obviously an issue with the upload, the headers didn't auto-detect and the rows a the top aren't necessary. We can alter the upload to pick what we want to import. Lets try it again but with more parameters.
 
-**To do** Use the help function to determine what we can use by typing ?read_xsls in the console.
+**To do** Use the help function to determine what we can use by typing ?read_xls in the console or typing read_xls in the help section.
 
 It looks like we should be using skip = # and col_names = TRUE. Lets try it out
 **To do** Use the new arguments in the function to re-import the dataset
 ```{r}
 # Skip a row an include headers in a JOMU import
 JOMU_Raw <- read_xls("data/2233056/SFAN_JOMU_LichenIndicatorSurvey2014.xls",skip = 1, col_names = TRUE)
+
+# NPSUtils Workaround: Replace above code with
+# JOMU_Raw <- read_xls("data/DataStore_Backup/SFAN_JOMU_LichenIndicatorSurvey2014.xls",skip = 1, col_names = TRUE)
 ```
 
 Notice the number of rows has decreased by 1 because we skipped the first row in import. Lets explore the dataset by clicking on the name in the Environment. 
 
 ## The question
 
-Now that we have our two datasets, we can explore a question. This week, the first question I'd lichen to answer is:
+Now that we have our two datasets, we can explore a question. This week, the question I'd lichen to answer is:
 
 **Were there any lichen genus or species that were found at CRMO were also found at JOMU?**
 
@@ -261,6 +294,8 @@ Scroll down to the examples and you will find: df %>% separate_wider_delim(x, ".
 # df %>% separate_wider_delim(x, ".", names = c("A", "B"))
 JOMU_ForMerge <- JOMU_Raw %>% 
   separate_wider_delim(Species, " ", names = c("Genus", "Species_edit"))
+
+# Note: this requires a tidyr package update. Ensure tidyr 1.3.0 or greater is installed.
 ```
 
 
@@ -306,7 +341,7 @@ nrow(CRMO_ForMerge %>%
         select(Genus,Species)%>%
         distinct())
 ```
-Since nrow = 127, we can leave all of the other data in the CRMO dataset. Now, we can merge!
+Since our original and distinct for have nrow = 127, we know there are no duplicate. We can leave all of the data in the CRMO dataset. Now, we can merge!
 
 
 **To do** Merge the datasets again using JOMU_ForMerge2 instead.
@@ -317,15 +352,15 @@ Merged_Data <- left_join(CRMO_ForMerge, JOMU_ForMerge2,  by=c('Genus' = 'Genus',
 Now, we have a Merged_Data dataset which has all of the records for CRMO and the last column, currently called Park, shows where merged data occurs.
 But let's think about the question. We want to see the data which has Genus AND Genus/Species. So lets change the name and contents of the Park column to something more descriptive. 
 
-**To do** In Merged_Data, rename() the Park column to JOMU_Species. Change the data within the column so that JOMU is TRUE and the null values are FALSE
+**To do** In Merged_Data, rename() the Park column to JOMU_Species. Change the data within the column to binary with 1 (TRUE) and 0 (False).
 ```{r}
 Merged_Data <- Merged_Data %>%
   rename(JOMU_Species = Park) %>%
-  mutate(JOMU_Species = if_else(JOMU_Species == "JOMU", "1" , "0"))
+  mutate(JOMU_Species = if_else(JOMU_Species == "JOMU", 1 , 0))
 ```
 
 Now, won't it be fun(gi) to do the same thing for only Genus?
-**To do** Repeat the steps starting with finding distinct() JOMU records for Genus (using only Genus rather than Genus and Species). Once merged, rename the column to JOMU_Genus and mutate to a TRUE/FALSE column.
+**To do** Repeat the steps starting with finding distinct() JOMU records for Genus (using only Genus rather than Genus and Species). Once merged, rename the column to JOMU_Genus and mutate to a binary column.
 ```{r}
 JOMU_ForMerge3 <- JOMU_ForMerge %>%
   select(Genus,Park) %>%
@@ -339,14 +374,38 @@ Merged_Data <- Merged_Data %>%
 ```
 
 ```{r}
-Merged_Data %>%
-  mutate(JOMU_Species = as.numeric(JOMU_Species)) %>%
+# This will add a row so that Species are displayed as having both matching species AND genus.
+ForGraph <- Merged_Data %>%
+  # replace nulls
   replace_na(list(JOMU_Genus = 0, JOMU_Species = 0)) %>%
+  # Create a new column called "category" to summarize Genus and Species data
   mutate(category = JOMU_Genus+JOMU_Species) %>%
-  filter(category > 0) %>%
-  mutate(category = (ifelse(category>1,"Species","Genus"))) %>%
+  # If there is a Species match, attribute "genus"
+  mutate(category = ifelse(category == 2, "Genus", NA)) %>%
+  # Remove all other values
+  na.omit()
+
+
+Merged_Data %>%
+  # Replace nulls
+  replace_na(list(JOMU_Genus = 0, JOMU_Species = 0)) %>%
+  # Create a new column called "category" to summarize Genus and Species data
+  mutate(category = JOMU_Genus+JOMU_Species) %>%
+  # Create a categorical classification from numeric
+  mutate(category = (ifelse(category>1,"Species",ifelse(category==0, "Not in JOMU","Genus")))) %>%
+  # Bring in the Genus rows (duplicates of species, but with Genus attribute)
+  rbind(ForGraph) %>%
+  # Alphabetical order
+  arrange(Scientific_name) %>%
+  # GGplot can only handle about 40 rows before axis text is negatively affected
+  slice(55:95) %>%
+  # Create plot, define X and Y
   ggplot(aes(x = category, y = fct_rev(Scientific_name))) +
-  geom_point() +
-  scale_y_discrete(guide = guide_axis(check.overlap = TRUE))
+  # Make it a dot plot!
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 1) +
+  # Scale the Y so that text doesn't overlap
+  scale_y_discrete(guide = guide_axis(check.overlap = TRUE)) +
+  # Order the X axis
+  scale_x_discrete(limits = c("Not in JOMU", "Genus","Species"))
 ```
 
