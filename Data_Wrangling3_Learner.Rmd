@@ -138,7 +138,7 @@ if(!require(NPSutils)){
 **To do** Call the NPSutils package using library()
 ```{r}
 #Call the github library
-library(NPSutils)
+
 ```
 
 
@@ -182,7 +182,7 @@ There is a tabular dataset that may be relatable, called John Muir National Hist
 
 **To Do** Use getDataPackages() to download the JOMU dataset.
 ```{r}
-getDataPackages(2233056)
+
 
 # NPSUtils Workaround: skip this step
 ```
@@ -191,10 +191,10 @@ Lets pull the excel file into R
 **To do** use read_xls() *note the file type! xls not xlsx* to import the .xls file.
 ```{r}
 # Create a new dataframe called CRMO_Raw. Use read_xlsx() to pull in the data we downloaded
-JOMU_Raw <- read_xls("data/2233056/SFAN_JOMU_LichenIndicatorSurvey2014.xls")
+JOMU_Raw <- 
 
 # NPSUtils Workaround: Replace above code with: 
-# JOMU_Raw <- read_xls("data/DataStore_Backup/SFAN_JOMU_LichenIndicatorSurvey2014.xls")
+# JOMU_Raw <- 
 ```
 
 We can see it has the red text "new names:" populate down below when this is run. Why? Lets look at the dataset by clicking on the name in the environment.
@@ -207,10 +207,10 @@ It looks like we should be using skip = # and col_names = TRUE. Lets try it out
 **To do** Use the new arguments in the function to re-import the dataset
 ```{r}
 # Skip a row an include headers in a JOMU import
-JOMU_Raw <- read_xls("data/2233056/SFAN_JOMU_LichenIndicatorSurvey2014.xls",skip = 1, col_names = TRUE)
+JOMU_Raw <- 
 
 # NPSUtils Workaround: Replace above code with
-# JOMU_Raw <- read_xls("data/DataStore_Backup/SFAN_JOMU_LichenIndicatorSurvey2014.xls",skip = 1, col_names = TRUE)
+# JOMU_Raw <- 
 ```
 
 Notice the number of rows has decreased by 1 because we skipped the first row in import. Lets explore the dataset by clicking on the name in the Environment. 
@@ -235,8 +235,8 @@ Notice that we have Scientific Name (which includes Species, Genus and sometimes
 *To Do* Create a new dataframe called CRMO_Edit. Use drop_na() in a pipeline to remove nulls from the dataset.
 ```{r}
 # New Dataframe <- Old dataframe %>% functions
-CRMO_Edit <- CRMO_Raw %>%
-  drop_na()
+
+
 ```
 
 Oh no! this deleted ALL the data. That's not what we wanted. 
@@ -247,9 +247,9 @@ Notice that the last three columns of the dataset are all null. Since drop_na() 
 **To do** Copy and paste the previous code chunk. Add a filter before drop_na() to ignore the last three data columns
 ```{r}
 # New Dataframe <- Old dataframe %>% functions
-CRMO_Edit <- CRMO_Raw %>%
-  select(-FirstOfRank, -FirstOfSubspecies, -FirstOfAuthority_subsp) %>%
-  drop_na()
+
+
+
 ```
 
 #### Aside about pipelines
@@ -275,8 +275,8 @@ For added clarity when we merge the datasets together, I want to rename my colum
 
 **To do** Create a new object called CRMO_ForMerge. Use CRMO_Edit with the rename() function to rename the Genus and Species columns to "CRMO_Genus" and "CRMO_Species"
 ```{r}
-CRMO_ForMerge <- CRMO_Edit %>%
-  rename(Genus = FirstOfGenus, Species = FirstOfspecies)
+
+
 ```
 
 ## 6. Wrangle JOMU Dataset
@@ -315,7 +315,7 @@ left_join(df1, df2, by=c('x1'='x2', 'y1'='y2'))
 
 *To do* Create a new dataset called Merged_Data. Inner Join the two ForMerge datasets on Genus and species columns
 ```{r}
-Merged_Data <- left_join(CRMO_ForMerge, JOMU_ForMerge,  by=c('Genus' = 'Genus', 'Species' = 'Species_edit'))
+
 
 #Note: All data does not match (this is expected) so a warning will show up that rows will be missing
 ```
@@ -327,9 +327,7 @@ How do we fix this?
 Lets filter the JOMU before we merge so that there are only unique values
 **To do** Create a new dataset called JOMU_ForMerge2. Use select to keep only the columns: Genus, Species and park. Then use distinct() to select only unique values.
 ```{r}
-JOMU_ForMerge2 <- JOMU_ForMerge %>%
-  select(Genus, Species_edit,Park) %>%
-  distinct()
+
 ```
 The dataset has decreased from 28 to 40. 
 
@@ -346,7 +344,7 @@ Since our original and distinct for have nrow = 127, we know there are no duplic
 
 **To do** Merge the datasets again using JOMU_ForMerge2 instead.
 ```{r}
-Merged_Data <- left_join(CRMO_ForMerge, JOMU_ForMerge2,  by=c('Genus' = 'Genus', 'Species' = 'Species_edit'))
+
 ```
 
 Now, we have a Merged_Data dataset which has all of the records for CRMO and the last column, currently called Park, shows where merged data occurs.
@@ -362,15 +360,11 @@ Merged_Data <- Merged_Data %>%
 Now, won't it be fun(gi) to do the same thing for only Genus?
 **To do** Repeat the steps starting with finding distinct() JOMU records for Genus (using only Genus rather than Genus and Species). Once merged, rename the column to JOMU_Genus and mutate to a binary column.
 ```{r}
-JOMU_ForMerge3 <- JOMU_ForMerge %>%
-  select(Genus,Park) %>%
-  distinct()
+JOMU_ForMerge3 <- 
 
-Merged_Data <- left_join(Merged_Data, JOMU_ForMerge3,  by=c('Genus' = 'Genus'))
+Merged_Data <- 
 
-Merged_Data <- Merged_Data %>%
-  rename(JOMU_Genus = Park) %>%
-  mutate(JOMU_Genus = if_else(JOMU_Genus == "JOMU", 1, 0))
+Merged_Data <- 
 ```
 
 ## 8. The Answer!
