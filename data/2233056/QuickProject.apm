@@ -1,0 +1,117 @@
+<ArcPad>
+	<MAP name="JOMU Arcpad Layers">
+		<COMMENTS/>
+		<PROPERTIES>
+			<ENVELOPE minx="575480.712087081" miny="4204207.64627" maxx="576006.739656737" maxy="4204752.80211491"/>
+			<COORDSYS string="PROJCS[&quot;NAD_1983_UTM_Zone_10N&quot;,GEOGCS[&quot;GCS_North_American_1983&quot;,DATUM[&quot;D_North_American_1983&quot;,SPHEROID[&quot;GRS_1980&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Transverse_Mercator&quot;],PARAMETER[&quot;False_Easting&quot;,500000],PARAMETER[&quot;False_Northing&quot;,0],PARAMETER[&quot;Central_Meridian&quot;,-123],PARAMETER[&quot;Scale_Factor&quot;,0.9996],PARAMETER[&quot;Latitude_Of_Origin&quot;,0],UNIT[&quot;Meter&quot;,1]]"/>
+			<SNAPPING tolerance="5"/>
+		</PROPERTIES>
+		<BOOKMARKS>
+			<BOOKMARK name="Full View" minx="575329.037569" miny="4203327.65934" maxx="577210.228831" maxy="4205420.517692"/>
+		</BOOKMARKS>
+		<LAYER name="Points" identify="true" edit="true" quickcapture="true" quickcapturelabel="Capture Points" quickdraw="1">
+			<DATASET name="Points.shp"/>
+			<METADATA>
+				<COMMENTS>QuickProject : Points</COMMENTS>
+			</METADATA>
+			<HYPERLINK field="PHOTO" path=""/>
+			<SYMBOLOGY>
+				<SIMPLELABELRENDERER field="NAME" rotationfield="" visible="true" expression="" language="">
+					<TEXTSYMBOL fontcolor="Black" font="Tahoma" fontstyle="regular" fontsize="9"/>
+				</SIMPLELABELRENDERER>
+			</SYMBOLOGY>
+			<SNAPPING vertex="false"/>
+		</LAYER>
+		<LAYER name="Lines" identify="true" edit="true" quickcapture="true" quickcapturelabel="Capture Lines" quickdraw="1">
+			<DATASET name="Lines.shp"/>
+			<METADATA>
+				<COMMENTS>QuickProject : Lines</COMMENTS>
+			</METADATA>
+			<HYPERLINK field="PHOTO" path=""/>
+			<SYMBOLOGY>
+				<SIMPLELABELRENDERER field="NAME" rotationfield="" visible="true" expression="" language="">
+					<TEXTSYMBOL fontcolor="Black" font="Tahoma" fontstyle="regular" fontsize="9"/>
+				</SIMPLELABELRENDERER>
+			</SYMBOLOGY>
+			<SNAPPING vertex="false" edge="false" end="false"/>
+		</LAYER>
+		<LAYER name="contour" transparency="0.67843137254902" identify="true" quickcapture="true" quickcapturelabel="Capture contour" quickdraw="1">
+			<DATASET name="\Storage Card\JOMU_ARCPAD_LAYERS\contour.shp"/>
+			<METADATA/>
+			<SYMBOLOGY>
+				<SIMPLELABELRENDERER field="DXF_LAYER" rotationfield="" visible="false" expression="" language="">
+					<TEXTSYMBOL fontcolor="Black" font="Arial" fontstyle="regular" fontsize="8" horzalignment="center" vertalignment="center"/>
+				</SIMPLELABELRENDERER>
+			</SYMBOLOGY>
+			<SNAPPING vertex="false" edge="false" end="false"/>
+		</LAYER>
+		<LAYER name="JOMU Nature Trails" identify="true" quickcapture="true" quickcapturelabel="Capture JOMU Nature Trails" quickdraw="1">
+			<DATASET name="\Storage Card\JOMU_ARCPAD_LAYERS\JOMU_Nature_Trails_All.shp"/>
+			<METADATA/>
+			<SYMBOLOGY>
+				<SIMPLELABELRENDERER field="Name" rotationfield="" visible="false" expression="" language="">
+					<TEXTSYMBOL fontcolor="Black" font="Arial" fontstyle="regular" fontsize="8" horzalignment="center" vertalignment="center"/>
+				</SIMPLELABELRENDERER>
+			</SYMBOLOGY>
+			<SNAPPING vertex="false" edge="false" end="false"/>
+		</LAYER>
+		<LAYER name="JOMU Fireroads" identify="true" quickcapture="true" quickcapturelabel="Capture JOMU Fireroads" quickdraw="1">
+			<DATASET name="\Storage Card\JOMU_ARCPAD_LAYERS\JOMU_Fireroads_All.shp"/>
+			<METADATA/>
+			<SYMBOLOGY>
+				<SIMPLELABELRENDERER field="Name" rotationfield="" visible="false" expression="" language="">
+					<TEXTSYMBOL fontcolor="Black" font="Arial" fontstyle="regular" fontsize="8" horzalignment="center" vertalignment="center"/>
+				</SIMPLELABELRENDERER>
+			</SYMBOLOGY>
+			<SNAPPING vertex="false" edge="false" end="false"/>
+		</LAYER>
+		<LAYER name="Polygons" identify="true" edit="true" quickcapture="true" quickcapturelabel="Capture Polygons" quickdraw="1">
+			<DATASET name="Polygons.shp"/>
+			<METADATA>
+				<COMMENTS>QuickProject : Polygons</COMMENTS>
+			</METADATA>
+			<HYPERLINK field="PHOTO" path=""/>
+			<SYMBOLOGY>
+				<SIMPLELABELRENDERER field="NAME" rotationfield="" visible="true" expression="" language="">
+					<TEXTSYMBOL fontcolor="Black" font="Tahoma" fontstyle="regular" fontsize="9"/>
+				</SIMPLELABELRENDERER>
+			</SYMBOLOGY>
+			<SNAPPING vertex="false" edge="false"/>
+		</LAYER>
+		<LAYER name="JOMU LocationID" transparency="0.556862745098039" identify="true" quickcapture="true" quickcapturelabel="Capture JOMU LocationID" quickdraw="1">
+			<DATASET name="\Storage Card\JOMU_ARCPAD_LAYERS\JOMU_LocationID.shp"/>
+			<METADATA/>
+			<SYMBOLOGY>
+				<SIMPLELABELRENDERER field="Name" rotationfield="" visible="false" expression="" language="">
+					<TEXTSYMBOL fontcolor="Black" font="Arial" fontstyle="regular" fontsize="8" horzalignment="center" vertalignment="center"/>
+				</SIMPLELABELRENDERER>
+			</SYMBOLOGY>
+			<SNAPPING vertex="false" edge="false"/>
+		</LAYER>
+		<LAYER name="JOMU Boundary" identify="true" quickcapture="true" quickcapturelabel="Capture JOMU Boundary" quickdraw="1">
+			<DATASET name="\Storage Card\JOMU_ARCPAD_LAYERS\jomubndp.shp"/>
+			<METADATA/>
+			<SYMBOLOGY>
+				<SIMPLELABELRENDERER field="NAME" rotationfield="" visible="false" expression="" language="">
+					<TEXTSYMBOL fontcolor="Black" font="Arial" fontstyle="regular" fontsize="8" horzalignment="center" vertalignment="center"/>
+				</SIMPLELABELRENDERER>
+			</SYMBOLOGY>
+			<SNAPPING vertex="false" edge="false"/>
+		</LAYER>
+		<STATUSBAR visible="false"/>
+		<SCALEBAR visible="true"/>
+		<NORTHARROW visible="false"/>
+		<ROTATION/>
+		<MAPGRID quickdraw="0"/>
+		<TRACKLOG quickdraw="0"/>
+		<TOOLBARS>
+			<TOOLBAR name="Main" visible="true"/>
+			<TOOLBAR name="Browse" visible="true"/>
+			<TOOLBAR name="Draw" visible="true"/>
+			<TOOLBAR name="QuickCapture" visible="true"/>
+			<TOOLBAR name="Navigation" visible="true"/>
+			<TOOLBAR name="Trimble GPScorrect" visible="true"/>
+		</TOOLBARS>
+		<REFPOINTS/>
+	</MAP>
+</ArcPad>
