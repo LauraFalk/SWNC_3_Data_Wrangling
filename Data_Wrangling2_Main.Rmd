@@ -113,7 +113,7 @@ groundhog_clean <- groundhog_raw %>%
   # Janitor to clean names
   clean_names() %>%
   # Convert missing character string to NA
-  na_if("") %>%
+  mutate_if(is.character, list(~na_if(., ""))) %>%
   # remove all NAs from dataframe
   drop_na() %>%
   # Transform a column to a different data type and perform a logical test
